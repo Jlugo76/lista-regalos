@@ -1,31 +1,71 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Lista de Regalos – Jhonathan</title>
 
   <!-- Tipografía estilo Apple -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet"/>
 
   <style>
+    /* =========================
+       THEME TOKENS & BASE
+       ========================= */
     :root{
+      /* Tokens neutrales (no cambian por modo) */
+      --accent:#7ed957;
+      --danger:#ff4d4f;
+
+      --radius-1:10px;
+      --radius-2:12px;
+      --radius-3:16px;
+      --blur-1:10px;
+      --blur-2:14px;
+
+      /* Tipografías fluidas */
+      --fs-h1: clamp(28px, 4vw, 42px);
+      --fs-h2: clamp(22px, 3.2vw, 34px);
+      --fs-h3: clamp(18px, 2.4vw, 22px);
+      --fs-body: clamp(14px, 1.8vw, 18px);
+    }
+
+    /* Tema OSCURO (por defecto) */
+    html[data-theme="dark"]{
       --text:#ffffff;
       --muted:#cfcfcf;
       --bg1:#0d0d0d;
       --bg2:#1a1a1a;
       --bg3:#0f0f0f;
       --divider: rgba(255,255,255,.08);
-      --accent:#7ed957;
-      --danger:#ff4d4f;
 
-      /* Tipografías fluidas por viewport */
-      --fs-h1: clamp(28px, 4vw, 42px);
-      --fs-h2: clamp(22px, 3.2vw, 34px);
-      --fs-h3: clamp(18px, 2.4vw, 22px);
-      --fs-body: clamp(14px, 1.8vw, 18px);
+      --glass-bg: rgba(255,255,255,.08);
+      --glass-bd: rgba(255,255,255,.18);
+      --glass-shadow: 0 10px 30px rgba(0,0,0,.35);
+
+      --btn-fg:#000;
+      --btn-grad-1:#41e27b;
+      --btn-grad-2:#2abf6a;
+    }
+
+    /* Tema CLARO tipo Apple (blanco puro) */
+    html[data-theme="light"]{
+      --text:#111111;
+      --muted:#444444;
+      --bg1:#f8f9fb;
+      --bg2:#ffffff;
+      --bg3:#f3f5f7;
+      --divider: rgba(0,0,0,.08);
+
+      --glass-bg: rgba(255,255,255,.6);
+      --glass-bd: rgba(0,0,0,.08);
+      --glass-shadow: 0 10px 26px rgba(0,0,0,.08);
+
+      --btn-fg:#0b1b12;
+      --btn-grad-1:#86f7a1;
+      --btn-grad-2:#44d57f;
     }
 
     *{box-sizing:border-box}
@@ -37,31 +77,82 @@
       background: linear-gradient(135deg, var(--bg1), var(--bg2) 40%, var(--bg3));
       overflow-x:hidden;
       line-height:1.4;
+      scroll-behavior:smooth;
     }
-    a{ color:#9bd1ff; text-decoration:none }
+    a{ color:#4ea7ff; text-decoration:none }
     a:hover{ text-decoration:underline }
 
-    .btn{
-      display:inline-block; padding:10px 14px; border-radius:10px;
-      background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.16);
-      color:#fff; transition:.25s ease;
-    }
-    .btn:hover{ background:rgba(255,255,255,.14) }
-
-    /* Navbar */
-    nav{
+    /* =========================
+       NAV SUPERIOR (glass)
+       ========================= */
+    nav.topbar{
       position:fixed; left:0; right:0; top:0;
       display:flex; justify-content:center; gap:clamp(16px, 5vw, 40px);
       padding:14px clamp(12px, 4vw, 24px);
-      background:rgba(0,0,0,.35);
-      backdrop-filter: blur(20px);
-      border-bottom:1px solid rgba(255,255,255,.06);
-      z-index:100;
+      background:var(--glass-bg);
+      -webkit-backdrop-filter: blur(var(--blur-2)) saturate(120%);
+      backdrop-filter: blur(var(--blur-2)) saturate(120%);
+      border-bottom:1px solid var(--glass-bd);
+      z-index:1000;
+      box-shadow: var(--glass-shadow);
     }
-    nav a{ color:#cfcfcf; font-size:clamp(13px, 1.8vw, 15px); transition:color .25s ease }
-    nav a:hover{ color:#fff }
+    nav.topbar a{ 
+      color:var(--muted); 
+      font-size:clamp(13px, 1.8vw, 15px); 
+      transition:color .25s ease 
+    }
+    nav.topbar a:hover{ color:var(--text) }
 
-    /* Hero */
+    /* =========================
+       SWITCH TEMA (estilo iOS)
+       ========================= */
+    .theme-switch{
+      position: fixed;
+      top: 14px;
+      right: 14px;
+      z-index: 1100;
+      user-select: none;
+    }
+    .toggle{
+      --h: 30px; --w: 56px;
+      width: var(--w); height: var(--h);
+      background: var(--glass-bg);
+      border:1px solid var(--glass-bd);
+      border-radius: 999px;
+      position: relative;
+      cursor: pointer;
+      -webkit-backdrop-filter: blur(var(--blur-1)) saturate(120%);
+      backdrop-filter: blur(var(--blur-1)) saturate(120%);
+      box-shadow: var(--glass-shadow);
+      transition: background .25s ease, border-color .25s ease;
+    }
+    .toggle .knob{
+      position:absolute; top:3px; left:3px;
+      width: calc(var(--h) - 6px); height: calc(var(--h) - 6px);
+      border-radius:50%;
+      background: linear-gradient(180deg, #fff, #ddd);
+      display:grid; place-items:center;
+      color:#111; font-size:14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,.25);
+      transition: transform .25s ease, background .25s ease;
+      will-change: transform;
+    }
+    html[data-theme="dark"] .toggle .knob{
+      background: linear-gradient(180deg, #222, #111);
+      color:#f5f5f5;
+    }
+    .toggle.active .knob{ transform: translateX(calc(var(--w) - var(--h))); }
+
+    .toggle .icon{
+      width:16px; height:16px; display:block;
+    }
+    .icon-sun, .icon-moon{ display:none }
+    html[data-theme="light"] .icon-sun{ display:block }
+    html[data-theme="dark"] .icon-moon{ display:block }
+
+    /* =========================
+       HERO / PORTADA
+       ========================= */
     .hero{
       min-height:68vh;
       display:flex; flex-direction:column; align-items:center; justify-content:center;
@@ -76,45 +167,57 @@
     .hero h1{ margin:22px 0 8px; font-size:var(--fs-h1); font-weight:600 }
     .hero p{ color:var(--muted); font-size:var(--fs-body) }
 
-    /* Callout */
     .callout{
       margin:24px auto 0; max-width:820px;
       background: rgba(255, 77, 79, .10);
       border:1px solid rgba(255, 77, 79, .35);
       border-left:4px solid var(--danger);
       padding:14px 16px; border-radius:12px; color:#ffdede;
-      backdrop-filter:saturate(110%); font-size:var(--fs-body);
+      -webkit-backdrop-filter:saturate(110%);
+      backdrop-filter:saturate(110%); 
+      font-size:var(--fs-body);
     }
+    html[data-theme="light"] .callout{ color:#a11; }
 
-    /* Contenedor general de la lista */
+    /* =========================
+       SECCIONES / GRUPOS
+       ========================= */
     .section{
       margin:80px auto; max-width:min(920px, 94vw);
-      padding:4px 0; animation:fadeIn 1.2s ease;
+      padding:4px 0; 
     }
     .section h2{
       font-size:var(--fs-h2); font-weight:600; text-align:center; margin:0 0 22px;
     }
 
-    /* Grupos temáticos con fondo armónico */
+    /* Cards de grupo (con reveal) */
     .group{
       padding:16px 16px 6px;
       border-radius:16px; border:1px solid var(--group-border, rgba(255,255,255,.08));
       background: var(--group-bg, rgba(255,255,255,.02));
       margin: 18px 0 28px;
+      opacity:0; transform: translateY(16px);
+      transition: opacity .7s ease, transform .7s ease;
+      will-change: transform, opacity;
     }
+    .group.is-visible{ opacity:1; transform: translateY(0); }
+
     .group-title{
       display:flex; align-items:center; gap:10px;
       font-size:clamp(16px,2.4vw,20px); font-weight:600; letter-spacing:-.2px;
       margin: 0 0 12px; color:#fff;
     }
+    html[data-theme="light"] .group-title{ color:#111; }
+
     .chip{
       display:inline-block; font-size:12px; padding:3px 8px; border-radius:999px;
       border:1px solid var(--chip-bd, rgba(255,255,255,.18));
       background: var(--chip-bg, rgba(255,255,255,.05));
       color:#eaeaea;
     }
+    html[data-theme="light"] .chip{ color:#333 }
 
-    /* Paletas por grupo (tintes muy suaves) */
+    /* Paletas por grupo */
     .theme-coffee { --group-bg: linear-gradient(180deg, rgba(198,140,83,.12), rgba(198,140,83,.03)); --group-border: rgba(198,140,83,.26); --chip-bg: rgba(198,140,83,.18); --chip-bd: rgba(198,140,83,.35); }
     .theme-beans  { --group-bg: linear-gradient(180deg, rgba(160,100,60,.12), rgba(160,100,60,.03)); --group-border: rgba(160,100,60,.26); --chip-bg: rgba(160,100,60,.18); --chip-bd: rgba(160,100,60,.35); }
     .theme-smart  { --group-bg: linear-gradient(180deg, rgba(79,195,247,.12), rgba(79,195,247,.03)); --group-border: rgba(79,195,247,.26); --chip-bg: rgba(79,195,247,.18); --chip-bd: rgba(79,195,247,.35); }
@@ -122,18 +225,132 @@
     .theme-leather{ --group-bg: linear-gradient(180deg, rgba(176,141,87,.12), rgba(176,141,87,.03)); --group-border: rgba(176,141,87,.26); --chip-bg: rgba(176,141,87,.18); --chip-bd: rgba(176,141,87,.35); }
     .theme-well   { --group-bg: linear-gradient(180deg, rgba(38,166,154,.12), rgba(38,166,154,.03)); --group-border: rgba(38,166,154,.26); --chip-bg: rgba(38,166,154,.18); --chip-bd: rgba(38,166,154,.35); }
 
-    /* Ítems */
     .item{ margin:0 0 18px; padding:0 0 16px; border-bottom:1px solid var(--divider) }
     .item:last-child{ border-bottom:none; padding-bottom:6px }
     .item h3{ font-size:var(--fs-h3); margin:0 0 6px; color:#fff }
     .item p{ margin:4px 0; color:var(--muted); font-size:var(--fs-body) }
+    html[data-theme="light"] .item h3{ color:#111 }
+
     .pref{
       display:inline-block; padding:3px 8px; margin-left:6px;
       background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12);
       font-size:12px; border-radius:999px;
     }
+    html[data-theme="light"] .pref{
+      background:rgba(0,0,0,.04); border-color:rgba(0,0,0,.08);
+    }
 
-    /* Contacto */
+    /* =========================
+       BOTONES (micro-interacciones)
+       ========================= */
+    .btn{
+      position:relative;
+      display:inline-block;
+      padding:12px 18px;
+      border-radius:12px;
+      background:linear-gradient(135deg, var(--btn-grad-1), var(--btn-grad-2));
+      color:var(--btn-fg);
+      font-weight:600;
+      border:none;
+      box-shadow:0 6px 16px rgba(0,0,0,.35);
+      transform:translateY(0);
+      transition: transform .25s ease, box-shadow .25s ease, filter .25s ease;
+      overflow:hidden;
+      isolation:isolate;
+    }
+    .btn:hover{
+      transform:translateY(-4px) scale(1.05);
+      box-shadow:0 12px 26px rgba(0,0,0,.45);
+      filter:brightness(1.12);
+      text-decoration:none;
+    }
+    .btn:active{ transform:translateY(1px) }
+
+    /* Shimmer en hover */
+    .btn::after{
+      content:"";
+      position:absolute; inset:-150% -20%;
+      background: linear-gradient(115deg, transparent 40%, rgba(255,255,255,.45) 50%, transparent 60%);
+      transform: translateX(-120%);
+      transition: transform .6s ease;
+      pointer-events:none;
+      mix-blend-mode: screen;
+    }
+    .btn:hover::after{ transform: translateX(120%); }
+
+    /* Ripple al click */
+    .ripple{
+      position:absolute; border-radius:50%;
+      transform:scale(0);
+      background: rgba(255,255,255,.5);
+      animation:ripple .6s ease-out forwards;
+      pointer-events:none;
+      mix-blend-mode: screen;
+    }
+    @keyframes ripple{
+      to{ transform:scale(6); opacity:0 }
+    }
+
+    /* =========================
+       ÍNDICE LATERAL INTELIGENTE
+       ========================= */
+    .side-index{
+      position: fixed;
+      top: 110px;
+      left: 16px;
+      z-index: 900;
+      display: flex; flex-direction: column; gap: 8px;
+      padding: 10px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-bd);
+      border-radius: 14px;
+      box-shadow: var(--glass-shadow);
+      -webkit-backdrop-filter: blur(var(--blur-1)) saturate(120%);
+      backdrop-filter: blur(var(--blur-1)) saturate(120%);
+      opacity:0; transform: translateX(-10px);
+      transition: opacity .35s ease, transform .35s ease;
+      pointer-events:none; /* hasta que se muestre */
+    }
+    .side-index.show{
+      opacity:1; transform: translateX(0);
+      pointer-events:auto;
+    }
+    .side-index a{
+      display:flex; align-items:center; gap:10px;
+      color:var(--muted);
+      border-radius:10px;
+      padding:8px 10px;
+      transition: background .25s ease, color .25s ease;
+      white-space:nowrap;
+    }
+    .side-index a:hover{ background: rgba(255,255,255,.08); color:var(--text) }
+    html[data-theme="light"] .side-index a:hover{ background: rgba(0,0,0,.06); }
+
+    .side-index .ico{
+      width:20px; height:20px; display:block; color:currentColor;
+    }
+    .side-index .label{ display:none; font-size:13px; }
+
+    /* Híbrido: en pantallas grandes, muestra texto */
+    @media (min-width: 1200px){
+      .side-index .label{ display:inline }
+    }
+
+    /* Item activo */
+    .side-index a.active{
+      color: var(--text);
+      background: rgba(126,217,87, .15);
+      border: 1px solid rgba(126,217,87,.35);
+    }
+
+    /* Ocultar en móvil */
+    @media (max-width: 768px){
+      .side-index{ display:none }
+    }
+
+    /* =========================
+       CONTACTO (glass fuerte)
+       ========================= */
     .contact-hero{
       position:relative; min-height:85vh;
       display:flex; align-items:flex-end; justify-content:center;
@@ -151,98 +368,170 @@
     }
     .contact-card{
       position:relative; z-index:2; margin:0 auto 36px;
-      padding:18px 22px; background:rgba(0,0,0,.45);
-      backdrop-filter:blur(10px); border-radius:16px;
-      border:1px solid rgba(255,255,255,.12);
+      padding:20px 22px; 
+      background: var(--glass-bg);
+      -webkit-backdrop-filter: blur(18px) saturate(140%);
+      backdrop-filter: blur(18px) saturate(140%);
+      border-radius:16px;
+      border:1px solid var(--glass-bd);
       max-width:min(840px, 92vw);
-      box-shadow:0 10px 30px rgba(0,0,0,.35);
+      box-shadow: var(--glass-shadow);
     }
 
-    /* Botón audio */
+    /* =========================
+       BOTÓN AUDIO (glass)
+       ========================= */
     #playSound{
       position:fixed; bottom:20px; right:20px;
-      padding:10px 14px; background:rgba(255,255,255,.15);
-      border-radius:12px; border:1px solid rgba(255,255,255,.25);
-      backdrop-filter:blur(10px); color:#fff; cursor:pointer;
+      padding:10px 14px; background:var(--glass-bg);
+      border-radius:12px; border:1px solid var(--glass-bd);
+      -webkit-backdrop-filter: blur(var(--blur-1)) saturate(120%);
+      backdrop-filter: blur(var(--blur-1)) saturate(120%);
+      color:var(--text); cursor:pointer;
       font-size:14px; z-index:9999;
       transition:.25s;
+      box-shadow: var(--glass-shadow);
     }
-    #playSound:hover{ background:rgba(255,255,255,.25); }
+    #playSound:hover{ background:rgba(255,255,255,.25) }
+    html[data-theme="light"] #playSound:hover{ background:rgba(0,0,0,.06) }
 
     footer{
-      text-align:center; padding:28px 12px; color:#a8a8a8;
-      font-size:14px; border-top:1px solid rgba(255,255,255,.06);
+      text-align:center; padding:28px 12px; color:var(--muted);
+      font-size:14px; border-top:1px solid var(--divider);
     }
 
+    /* =========================
+       ANIMACIONES & ACCESIBILIDAD
+       ========================= */
     @keyframes float{0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)}}
     @keyframes fadeIn{from{opacity:0} to{opacity:1}}
 
-    @media(max-width:640px){
-      .contact-bg{ object-position:50% 12% }
-      #playSound{ bottom:12px; right:12px }
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce){
+      .hero img{ animation:none }
+      .group{ transition:none }
+      .btn::after{ display:none }
     }
   </style>
 </head>
 <body>
 
-  <!-- NAV -->
-  <nav>
+  <!-- NAV (arriba) -->
+  <nav class="topbar" aria-label="Navegación principal">
     <a href="#inicio">Inicio</a>
     <a href="#lista">Lista</a>
     <a href="#contacto">Contacto</a>
   </nav>
 
-  <!-- AUDIO (autoplay mute + botón) -->
+  <!-- SWITCH DE TEMA (flotante arriba derecha) -->
+  <div class="theme-switch" aria-live="polite">
+    <button id="themeToggle" class="toggle" type="button" aria-label="Cambiar tema claro/oscuro" title="Tema claro/oscuro">
+      <span class="knob">
+        <!-- Iconos lineales estilo iOS (SVG simple) -->
+        <svg class="icon-sun icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5"/>
+        </svg>
+        <svg class="icon-moon icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        </svg>
+      </span>
+    </button>
+  </div>
+
+  <!-- AUDIO -->
   <audio id="bgm" autoplay loop muted playsinline>
     <source src="https://raw.githubusercontent.com/Jlugo76/lista-regalos/main/song.m4a" type="audio/mp4">
-    <!-- Si más adelante subes MP3, añade:
+    <!-- Alternativa MP3 (si la subes):
     <source src="https://raw.githubusercontent.com/Jlugo76/lista-regalos/main/song.mp3" type="audio/mpeg">
     -->
   </audio>
   <button id="playSound" aria-label="Activar sonido">🔊 Activar sonido</button>
 
-  <script>
-    const audio = document.getElementById("bgm");
-    const btn = document.getElementById("playSound");
-
-    async function safePlay(){ try{ await audio.play(); }catch{} }
-    document.addEventListener("DOMContentLoaded", safePlay);
-
-    btn.addEventListener("click", ()=>{
-      audio.muted = false;
-      audio.volume = 0;
-      audio.play();
-      btn.textContent = "🎵 Sonando…";
-      btn.style.opacity = 0.7;
-
-      // Fade-in de volumen
-      let v = 0;
-      const fade = setInterval(()=>{
-        v += 0.07;
-        audio.volume = Math.min(v,1);
-        if(v>=1) clearInterval(fade);
-      },120);
-    });
-  </script>
-
   <!-- PORTADA -->
-  <section id="inicio" class="hero">
+  <section id="inicio" class="hero" aria-label="Portada">
     <img src="https://raw.githubusercontent.com/Jlugo76/lista-regalos/main/Portada.JPG" alt="Portada">
     <h1>Lista de Regalos</h1>
-    <p style="color:#b1f7c8;">Cosillas que me gustaría tener 😅</p>
+    <p style="color:#22d27a;">Cosillas que me gustaría tener 😅</p>
 
     <div class="callout" role="note" aria-label="Aviso importante">
       <strong>Importante:</strong> No se aceptan regalos de <u>ropa</u> ni artículos derivados (incluye vales, accesorios o similares).
     </div>
   </section>
 
-  <!-- LISTA (reorganizada con secciones temáticas y fondo armónico por grupo) -->
+  <!-- ÍNDICE LATERAL HÍBRIDO (auto-ocultable) -->
+  <aside id="sideIndex" class="side-index" aria-label="Índice de secciones">
+    <!-- Cada ítem: icono lineal (SVG) + etiqueta (muestra en pantallas grandes) -->
+    <a href="#setup-cafetero" data-target="setup-cafetero">
+      <!-- Taza de café -->
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M4 10h12a4 4 0 0 1 0 8H8a4 4 0 0 1-4-4v-4z"></path>
+        <path d="M16 10h2a3 3 0 1 1 0 6"></path>
+        <path d="M6 18v1c0 1.1 4 2 6 2s6-.9 6-2v-1"></path>
+      </svg>
+      <span class="label">Setup cafetero</span>
+    </a>
+    <a href="#cafe-grano" data-target="cafe-grano">
+      <!-- Grano de café -->
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 3c4.97 0 9 4.03 9 9 0 4.97-4.03 9-9 9S3 16.97 3 12 7.03 3 12 3z"></path>
+        <path d="M9 7c1.5 4 5 5 6 10"></path>
+      </svg>
+      <span class="label">Café en grano</span>
+    </a>
+    <a href="#domotica" data-target="domotica">
+      <!-- Casa / domótica -->
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M3 11l9-7 9 7"></path>
+        <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"></path>
+      </svg>
+      <span class="label">Domótica</span>
+    </a>
+    <a href="#bienestar" data-target="bienestar">
+      <!-- Ducha -->
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M4 4h10a4 4 0 0 1 4 4v2"></path>
+        <path d="M8 10v10"></path>
+        <path d="M6 14h4M6 17h4M6 20h4"></path>
+      </svg>
+      <span class="label">Bienestar/Agua</span>
+    </a>
+    <a href="#cocina" data-target="cocina">
+      <!-- Olla -->
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="10" width="18" height="8" rx="2" ry="2"></rect>
+        <path d="M7 10V8h10v2"></path>
+        <path d="M5 14h14"></path>
+      </svg>
+      <span class="label">Cocina</span>
+    </a>
+    <a href="#cuero" data-target="cuero">
+      <!-- Bolsa -->
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M6 7h12l1 12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L6 7z"></path>
+        <path d="M9 7a3 3 0 0 1 6 0"></path>
+      </svg>
+      <span class="label">Cuero</span>
+    </a>
+    <a href="#aportes" data-target="aportes">
+      <!-- Regalo -->
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="8" width="18" height="14" rx="2"></rect>
+        <path d="M12 8v14"></path>
+        <path d="M3 12h18"></path>
+        <path d="M12 8c-1.5 0-3-1-3-2.5S10.5 3 12 5c1.5-2 3-1.5 3 0S13.5 8 12 8z"></path>
+      </svg>
+      <span class="label">Aportes</span>
+    </a>
+  </aside>
+
+  <!-- LISTA -->
   <section id="lista" class="section" aria-label="Lista de regalos">
     <h2>Lista de Regalos</h2>
 
-    <!-- SETUP CAFETERO (equipos y accesorios) -->
-    <div class="group theme-coffee">
-      <div class="group-title">Setup cafetero <span class="chip">equipos & accesorios</span></div>
+    <!-- SETUP CAFETERO -->
+    <div id="setup-cafetero" class="group theme-coffee reveal">
+      <div class="group-title">Setup cafetero <span class="chip">equipos &amp; accesorios</span></div>
 
       <div class="item">
         <h3>MHW‑3Bomber Rain Pour‑Over Coffee Splitter <span class="pref">Color: Negro (preferido)</span></h3>
@@ -270,7 +559,7 @@
     </div>
 
     <!-- CAFÉ EN GRANO -->
-    <div class="group theme-beans">
+    <div id="cafe-grano" class="group theme-beans reveal">
       <div class="group-title">Café en grano <span class="chip">especialidad</span></div>
 
       <div class="item">
@@ -286,8 +575,8 @@
       </div>
     </div>
 
-    <!-- DOMÓTICA / HOGAR INTELIGENTE -->
-    <div class="group theme-smart">
+    <!-- DOMÓTICA -->
+    <div id="domotica" class="group theme-smart reveal">
       <div class="group-title">Domótica / Hogar inteligente <span class="chip">smart home</span></div>
 
       <div class="item">
@@ -303,8 +592,8 @@
       </div>
     </div>
 
-    <!-- BIENESTAR / AGUA -->
-    <div class="group theme-well">
+    <!-- BIENESTAR -->
+    <div id="bienestar" class="group theme-well reveal">
       <div class="group-title">Bienestar / Agua <span class="chip">baño</span></div>
 
       <div class="item">
@@ -315,8 +604,8 @@
     </div>
 
     <!-- COCINA -->
-    <div class="group theme-kitchen">
-      <div class="group-title">Cocina <span class="chip">cocción & organización</span></div>
+    <div id="cocina" class="group theme-kitchen reveal">
+      <div class="group-title">Cocina <span class="chip">cocción &amp; organización</span></div>
 
       <div class="item">
         <h3>Cazuela de hierro fundido 6 L – Ø28 cm <span class="pref">Negro</span></h3>
@@ -331,8 +620,8 @@
       </div>
     </div>
 
-    <!-- ACCESORIOS DE CUERO -->
-    <div class="group theme-leather">
+    <!-- CUERO -->
+    <div id="cuero" class="group theme-leather reveal">
       <div class="group-title">Accesorios de cuero (TORROSS) <span class="chip">premium</span></div>
 
       <div class="item">
@@ -347,7 +636,7 @@
     </div>
 
     <!-- APORTES -->
-    <div class="group" style="--group-bg:linear-gradient(180deg, rgba(180,180,255,.10), rgba(180,180,255,.03)); --group-border:rgba(180,180,255,.25); --chip-bg:rgba(180,180,255,.18); --chip-bd:rgba(180,180,255,.35);">
+    <div id="aportes" class="group" style="--group-bg:linear-gradient(180deg, rgba(180,180,255,.10), rgba(180,180,255,.03)); --group-border:rgba(180,180,255,.25); --chip-bg:rgba(180,180,255,.18); --chip-bd:rgba(180,180,255,.35);" >
       <div class="group-title">Aportes / Meta <span class="chip">contribuciones</span></div>
 
       <div class="item">
@@ -374,6 +663,153 @@
     Creado por Jhonathan • No preguntes cómo 😄
   </footer>
 
+  <!-- =========================
+       INTERACTIVIDAD (JS)
+       ========================= -->
+  <script>
+    // ---------------------------------------
+    // 1) Tema (oscuro por defecto + toggle)
+    // ---------------------------------------
+    (function(){
+      const root = document.documentElement;
+      const key = 'jl-theme';
+      const saved = localStorage.getItem(key);
+      const defaultTheme = 'dark'; // oscuro por defecto
+      root.setAttribute('data-theme', saved || defaultTheme);
+
+      const btn = document.getElementById('themeToggle');
+      const isLight = () => root.getAttribute('data-theme') === 'light';
+      const apply = (mode) => {
+        root.setAttribute('data-theme', mode);
+        localStorage.setItem(key, mode);
+        btn.classList.toggle('active', mode === 'light');
+      };
+
+      // Estado inicial del knob
+      btn.classList.toggle('active', isLight());
+
+      btn.addEventListener('click', ()=>{
+        apply(isLight() ? 'dark' : 'light');
+      });
+    })();
+
+    // ---------------------------------------
+    // 2) Audio con fade-in
+    // ---------------------------------------
+    (function(){
+      const audio = document.getElementById("bgm");
+      const btn = document.getElementById("playSound");
+
+      async function safePlay(){ try{ await audio.play(); }catch{} }
+      document.addEventListener("DOMContentLoaded", safePlay);
+
+      btn.addEventListener("click", ()=>{
+        audio.muted = false;
+        audio.volume = 0;
+        audio.play();
+        btn.textContent = "🎵 Sonando…";
+        btn.style.opacity = 0.8;
+
+        let v = 0;
+        const fade = setInterval(()=>{
+          v += 0.07;
+          audio.volume = Math.min(v,1);
+          if(v>=1) clearInterval(fade);
+        },120);
+      });
+    })();
+
+    // ---------------------------------------
+    // 3) Reveal al hacer scroll (grupos)
+    // ---------------------------------------
+    (function(){
+      const reveals = document.querySelectorAll('.group.reveal');
+      const obs = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting){
+            e.target.classList.add('is-visible');
+            // Una vez visible, dejar de observar
+            obs.unobserve(e.target);
+          }
+        });
+      }, {threshold:.16});
+      reveals.forEach(el=>obs.observe(el));
+    })();
+
+    // ---------------------------------------
+    // 4) Índice lateral: auto-ocultar + scrollspy activo
+    // ---------------------------------------
+    (function(){
+      const side = document.getElementById('sideIndex');
+      const lista = document.getElementById('lista');
+      const contacto = document.getElementById('contacto');
+
+      // Mostrar índice cuando lista está visible
+      const obsVis = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{
+          if(e.target.id === 'lista'){
+            if(e.isIntersecting) side.classList.add('show');
+            else side.classList.remove('show');
+          }
+        });
+      }, {threshold: .06});
+      obsVis.observe(lista);
+
+      // Ocultar cerca de contacto si no quieres solaparlo (opcional)
+      const obsHide = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting) side.classList.remove('show');
+        });
+      }, {threshold: .12});
+      obsHide.observe(contacto);
+
+      // Scrollspy para activar el ítem correspondiente
+      const map = {
+        'setup-cafetero': document.querySelector('.side-index a[data-target="setup-cafetero"]'),
+        'cafe-grano': document.querySelector('.side-index a[data-target="cafe-grano"]'),
+        'domotica': document.querySelector('.side-index a[data-target="domotica"]'),
+        'bienestar': document.querySelector('.side-index a[data-target="bienestar"]'),
+        'cocina': document.querySelector('.side-index a[data-target="cocina"]'),
+        'cuero': document.querySelector('.side-index a[data-target="cuero"]'),
+        'aportes': document.querySelector('.side-index a[data-target="aportes"]'),
+      };
+      const groups = Object.keys(map).map(id => document.getElementById(id));
+      const spy = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting){
+            // Limpiar activos
+            Object.values(map).forEach(a=>a.classList.remove('active'));
+            // Activar el de la sección visible
+            const a = map[e.target.id];
+            if(a) a.classList.add('active');
+          }
+        });
+      }, {rootMargin: "-30% 0px -60% 0px", threshold:.2});
+      groups.forEach(el=> el && spy.observe(el));
+    })();
+
+    // ---------------------------------------
+    // 5) Ripple en botones (.btn)
+    // ---------------------------------------
+    (function(){
+      function createRipple(e){
+        const el = e.currentTarget;
+        const rect = el.getBoundingClientRect();
+        const ripple = document.createElement('span');
+        const size = Math.max(rect.width, rect.height);
+        const x = e.clientX - rect.left - size/2;
+        const y = e.clientY - rect.top - size/2;
+        ripple.className = 'ripple';
+        ripple.style.width = ripple.style.height = size + 'px';
+        ripple.style.left = x + 'px';
+        ripple.style.top = y + 'px';
+        el.appendChild(ripple);
+        setTimeout(()=>ripple.remove(), 650);
+      }
+      document.querySelectorAll('.btn').forEach(btn=>{
+        btn.addEventListener('click', createRipple);
+      });
+    })();
+  </script>
 </body>
 </html>
-``
