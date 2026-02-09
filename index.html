@@ -21,6 +21,7 @@
       --accent:#7ed957;
       --danger:#ff4d4f;
 
+      /* Tipografías fluidas por viewport */
       --fs-h1: clamp(28px, 4vw, 42px);
       --fs-h2: clamp(22px, 3.2vw, 34px);
       --fs-h3: clamp(18px, 2.4vw, 22px);
@@ -85,21 +86,46 @@
       backdrop-filter:saturate(110%); font-size:var(--fs-body);
     }
 
-    /* Lista */
+    /* Contenedor general de la lista */
     .section{
-      margin:80px auto; max-width:min(880px, 92vw);
-      padding:20px; animation:fadeIn 1.2s ease;
+      margin:80px auto; max-width:min(920px, 94vw);
+      padding:4px 0; animation:fadeIn 1.2s ease;
     }
     .section h2{
-      font-size:var(--fs-h2); font-weight:600; text-align:center; margin-bottom:26px;
+      font-size:var(--fs-h2); font-weight:600; text-align:center; margin:0 0 22px;
     }
-    .category{
-      margin:30px 0 10px; padding-top:8px;
-      font-size:clamp(16px, 2.2vw, 18px); color:var(--muted);
-      border-top:1px dashed var(--divider);
+
+    /* Grupos temáticos con fondo armónico */
+    .group{
+      padding:16px 16px 6px;
+      border-radius:16px; border:1px solid var(--group-border, rgba(255,255,255,.08));
+      background: var(--group-bg, rgba(255,255,255,.02));
+      margin: 18px 0 28px;
     }
-    .item{ margin-bottom:22px; padding-bottom:18px; border-bottom:1px solid var(--divider) }
-    .item h3{ font-size:var(--fs-h3); margin-bottom:6px }
+    .group-title{
+      display:flex; align-items:center; gap:10px;
+      font-size:clamp(16px,2.4vw,20px); font-weight:600; letter-spacing:-.2px;
+      margin: 0 0 12px; color:#fff;
+    }
+    .chip{
+      display:inline-block; font-size:12px; padding:3px 8px; border-radius:999px;
+      border:1px solid var(--chip-bd, rgba(255,255,255,.18));
+      background: var(--chip-bg, rgba(255,255,255,.05));
+      color:#eaeaea;
+    }
+
+    /* Paletas por grupo (tintes muy suaves) */
+    .theme-coffee { --group-bg: linear-gradient(180deg, rgba(198,140,83,.12), rgba(198,140,83,.03)); --group-border: rgba(198,140,83,.26); --chip-bg: rgba(198,140,83,.18); --chip-bd: rgba(198,140,83,.35); }
+    .theme-beans  { --group-bg: linear-gradient(180deg, rgba(160,100,60,.12), rgba(160,100,60,.03)); --group-border: rgba(160,100,60,.26); --chip-bg: rgba(160,100,60,.18); --chip-bd: rgba(160,100,60,.35); }
+    .theme-smart  { --group-bg: linear-gradient(180deg, rgba(79,195,247,.12), rgba(79,195,247,.03)); --group-border: rgba(79,195,247,.26); --chip-bg: rgba(79,195,247,.18); --chip-bd: rgba(79,195,247,.35); }
+    .theme-kitchen{ --group-bg: linear-gradient(180deg, rgba(144,164,174,.12), rgba(144,164,174,.03)); --group-border: rgba(144,164,174,.26); --chip-bg: rgba(144,164,174,.18); --chip-bd: rgba(144,164,174,.35); }
+    .theme-leather{ --group-bg: linear-gradient(180deg, rgba(176,141,87,.12), rgba(176,141,87,.03)); --group-border: rgba(176,141,87,.26); --chip-bg: rgba(176,141,87,.18); --chip-bd: rgba(176,141,87,.35); }
+    .theme-well   { --group-bg: linear-gradient(180deg, rgba(38,166,154,.12), rgba(38,166,154,.03)); --group-border: rgba(38,166,154,.26); --chip-bg: rgba(38,166,154,.18); --chip-bd: rgba(38,166,154,.35); }
+
+    /* Ítems */
+    .item{ margin:0 0 18px; padding:0 0 16px; border-bottom:1px solid var(--divider) }
+    .item:last-child{ border-bottom:none; padding-bottom:6px }
+    .item h3{ font-size:var(--fs-h3); margin:0 0 6px; color:#fff }
     .item p{ margin:4px 0; color:var(--muted); font-size:var(--fs-body) }
     .pref{
       display:inline-block; padding:3px 8px; margin-left:6px;
@@ -166,12 +192,14 @@
     <a href="#contacto">Contacto</a>
   </nav>
 
-  <!-- AUDIO -->
+  <!-- AUDIO (autoplay mute + botón) -->
   <audio id="bgm" autoplay loop muted playsinline>
     <source src="https://raw.githubusercontent.com/Jlugo76/lista-regalos/main/song.m4a" type="audio/mp4">
+    <!-- Si más adelante subes MP3, añade:
+    <source src="https://raw.githubusercontent.com/Jlugo76/lista-regalos/main/song.mp3" type="audio/mpeg">
+    -->
   </audio>
-
-  <button id="playSound">🔊 Activar sonido</button>
+  <button id="playSound" aria-label="Activar sonido">🔊 Activar sonido</button>
 
   <script>
     const audio = document.getElementById("bgm");
@@ -184,11 +212,10 @@
       audio.muted = false;
       audio.volume = 0;
       audio.play();
-
       btn.textContent = "🎵 Sonando…";
       btn.style.opacity = 0.7;
 
-      // Fade-in
+      // Fade-in de volumen
       let v = 0;
       const fade = setInterval(()=>{
         v += 0.07;
@@ -200,118 +227,146 @@
 
   <!-- PORTADA -->
   <section id="inicio" class="hero">
-    <img src="https://raw.githubusercontent.com/Jlugo76/lista-regalos/main/Portada.JPG">
+    <img src="https://raw.githubusercontent.com/Jlugo76/lista-regalos/main/Portada.JPG" alt="Portada">
     <h1>Lista de Regalos</h1>
     <p style="color:#b1f7c8;">Cosillas que me gustaría tener 😅</p>
 
-    <div class="callout">
-      <strong>Importante:</strong> No se aceptan regalos de <u>ropa</u> ni artículos derivados.
+    <div class="callout" role="note" aria-label="Aviso importante">
+      <strong>Importante:</strong> No se aceptan regalos de <u>ropa</u> ni artículos derivados (incluye vales, accesorios o similares).
     </div>
   </section>
 
-  <!-- LISTA -->
-  <section id="lista" class="section">
-
+  <!-- LISTA (reorganizada con secciones temáticas y fondo armónico por grupo) -->
+  <section id="lista" class="section" aria-label="Lista de regalos">
     <h2>Lista de Regalos</h2>
 
-    <div class="category">Café & Brewing</div>
+    <!-- SETUP CAFETERO (equipos y accesorios) -->
+    <div class="group theme-coffee">
+      <div class="group-title">Setup cafetero <span class="chip">equipos & accesorios</span></div>
 
-    <div class="item">
-      <h3>MHW‑3Bomber Rain Pour‑Over Coffee Splitter <span class="pref">Negro</span></h3>
-      <p>Divisor de vertido tipo “rain”.</p>
-      <p><a class="btn" href="https://mhw3bomber.com/es/products/mhw-3bomber-rain-pour-over-coffee-splitter" target="_blank">Ver producto →</a></p>
+      <div class="item">
+        <h3>MHW‑3Bomber Rain Pour‑Over Coffee Splitter <span class="pref">Color: Negro (preferido)</span></h3>
+        <p>Divisor de vertido tipo “rain” para pour‑over; flujo uniforme y muy estético.</p>
+        <p><a class="btn" href="https://mhw3bomber.com/es/products/mhw-3bomber-rain-pour-over-coffee-splitter" target="_blank" rel="noopener">Ver producto →</a></p>
+      </div>
+
+      <div class="item">
+        <h3>MHW‑3Bomber Cold Brew Coffee Maker <span class="pref">Color: Negro</span></h3>
+        <p>Cafetera para cold brew; diseño limpio y fácil de usar.</p>
+        <p><a class="btn" href="https://mhw3bomber.com/es/products/mhw-3bomber-cold-brew-coffee-maker?variant=45144112660618" target="_blank" rel="noopener">Ver producto →</a></p>
+      </div>
+
+      <div class="item">
+        <h3>Filtro metálico reutilizable para AeroPress</h3>
+        <p>Filtro de acero inoxidable para AeroPress estándar (1 paquete).</p>
+        <p><a class="btn" href="https://www.amazon.es/gp/product/B0B3BTYSTD/ref=ox_sc_act_title_12?smid=A1TVW9ONTBQJAY&th=1" target="_blank" rel="noopener">Ver producto →</a></p>
+      </div>
+
+      <div class="item">
+        <h3>Yamazaki TOWER – Coffee Filter Case</h3>
+        <p>Organizador para filtros de café. Medidas 18.4 × 9.2 × 15.4 cm.</p>
+        <p><a class="btn" href="https://www.amazon.es/gp/product/B0CDZWX1PG/ref=ox_sc_act_title_16?smid=A1AT7YVPFBWXBL&th=1" target="_blank" rel="noopener">Ver producto →</a></p>
+      </div>
     </div>
 
-    <div class="item">
-      <h3>MHW‑3Bomber Cold Brew Coffee Maker <span class="pref">Negro</span></h3>
-      <p>Cafetera cold brew.</p>
-      <p><a class="btn" href="https://mhw3bomber.com/es/products/mhw-3bomber-cold-brew-coffee-maker?variant=45144112660618" target="_blank">Ver producto →</a></p>
+    <!-- CAFÉ EN GRANO -->
+    <div class="group theme-beans">
+      <div class="group-title">Café en grano <span class="chip">especialidad</span></div>
+
+      <div class="item">
+        <h3>Colombia LYNX 86.5 SCA</h3>
+        <p>Lavado con fermentación; ideal para métodos suaves.</p>
+        <p><a class="btn" href="https://salem.cafe/products/cafe-de-especialidad-de-colombia-lavado-con-fermentacion-lynx-86-5-sca" target="_blank" rel="noopener">Ver producto →</a></p>
+      </div>
+
+      <div class="item">
+        <h3>Kenia de especialidad</h3>
+        <p>Perfil brillante y frutal; excelente para pour‑over.</p>
+        <p><a class="btn" href="https://salem.cafe/products/cafe-de-kenia-de-especialidad" target="_blank" rel="noopener">Ver producto →</a></p>
+      </div>
     </div>
 
-    <div class="item">
-      <h3>Café Colombia LYNX 86.5 SCA</h3>
-      <p>Grano lavado con fermentación.</p>
-      <p><a class="btn" href="https://salem.cafe/products/cafe-de-especialidad-de-colombia-lavado-con-fermentacion-lynx-86-5-sca" target="_blank">Ver producto →</a></p>
+    <!-- DOMÓTICA / HOGAR INTELIGENTE -->
+    <div class="group theme-smart">
+      <div class="group-title">Domótica / Hogar inteligente <span class="chip">smart home</span></div>
+
+      <div class="item">
+        <h3>Shelly EM – Medidor de Energía Wi‑Fi (1 pinza 50A)</h3>
+        <p>Monitoreo de consumo con historial 365 días. Compatible con Alexa y Google Home.</p>
+        <p><a class="btn" href="https://www.amazon.es/gp/product/B0BL7VC2H7/ref=ox_sc_act_title_20?smid=A8K5X0OBKV2JK&psc=1" target="_blank" rel="noopener">Ver producto →</a></p>
+      </div>
+
+      <div class="item">
+        <h3>Amazon Echo Show 15 (última generación)</h3>
+        <p>Pantalla inteligente 15,6″ Full HD con Fire TV y Alexa.</p>
+        <p><a class="btn" href="https://www.amazon.es/gp/product/B0C7XHY6YS/ref=ox_sc_act_title_41?smid=A1AT7YVPFBWXBL&th=1" target="_blank" rel="noopener">Ver producto →</a></p>
+      </div>
     </div>
 
-    <div class="item">
-      <h3>Café Kenia de especialidad</h3>
-      <p>Perfil brillante y frutal.</p>
-      <p><a class="btn" href="https://salem.cafe/products/cafe-de-kenia-de-especialidad" target="_blank">Ver producto →</a></p>
+    <!-- BIENESTAR / AGUA -->
+    <div class="group theme-well">
+      <div class="group-title">Bienestar / Agua <span class="chip">baño</span></div>
+
+      <div class="item">
+        <h3>Pack 2 – Filtros de ducha (VeoryFly)</h3>
+        <p>Reduce cloro, metales pesados y sedimentos. Cartuchos intercambiables.</p>
+        <p><a class="btn" href="https://www.amazon.es/gp/product/B0F8VNJ96F/ref=ox_sc_act_title_23?smid=A2AEKTJUXTI38Z&th=1" target="_blank" rel="noopener">Ver producto →</a></p>
+      </div>
     </div>
 
-    <div class="item">
-      <h3>Filtro AeroPress metálico</h3>
-      <p>Filtro de acero inoxidable.</p>
-      <p><a class="btn" href="https://www.amazon.es/gp/product/B0B3BTYSTD" target="_blank">Ver producto →</a></p>
+    <!-- COCINA -->
+    <div class="group theme-kitchen">
+      <div class="group-title">Cocina <span class="chip">cocción & organización</span></div>
+
+      <div class="item">
+        <h3>Cazuela de hierro fundido 6 L – Ø28 cm <span class="pref">Negro</span></h3>
+        <p>Compatible con inducción y todas las fuentes de calor. Versátil para guisos.</p>
+        <p><a class="btn" href="https://www.amazon.es/gp/product/B0BXKHJDRP/ref=ox_sc_act_title_10?smid=A1QFIC0N9WI4E7&th=1" target="_blank" rel="noopener">Ver producto →</a></p>
+      </div>
+
+      <div class="item">
+        <h3>Soportes de tazas (2 piezas) – Negro</h3>
+        <p>Rack sin perforación, con 4 estantes para organizar tazas.</p>
+        <p><a class="btn" href="https://www.amazon.es/gp/product/B0C5JYQ9DD/ref=ox_sc_act_title_28?smid=APH9MJG3IM2YG&psc=1" target="_blank" rel="noopener">Ver producto →</a></p>
+      </div>
     </div>
 
-    <div class="item">
-      <h3>Yamazaki Tower – Coffee Filter Case</h3>
-      <p>Organizador de filtros.</p>
-      <p><a class="btn" href="https://www.amazon.es/gp/product/B0CDZWX1PG" target="_blank">Ver producto →</a></p>
+    <!-- ACCESORIOS DE CUERO -->
+    <div class="group theme-leather">
+      <div class="group-title">Accesorios de cuero (TORROSS) <span class="chip">premium</span></div>
+
+      <div class="item">
+        <h3>TORROSS™ Borsa ad angolo <span class="pref">Tipo marsupio</span></h3>
+        <p><a class="btn" href="https://torrosscrafted.com/it/collections/borse" target="_blank" rel="noopener">Ver producto →</a></p>
+      </div>
+
+      <div class="item">
+        <h3>TORROSS™ Custodia per telefono – iPhone <span class="pref">Negro + MagSafe</span></h3>
+        <p><a class="btn" href="https://torrosscrafted.com/it/products/custodia-per-telefono-torross%E2%84%A2-blu-scuro?variant=47173240389956" target="_blank" rel="noopener">Ver producto →</a></p>
+      </div>
     </div>
 
-    <div class="category">Accesorios de cuero (TORROSS)</div>
+    <!-- APORTES -->
+    <div class="group" style="--group-bg:linear-gradient(180deg, rgba(180,180,255,.10), rgba(180,180,255,.03)); --group-border:rgba(180,180,255,.25); --chip-bg:rgba(180,180,255,.18); --chip-bd:rgba(180,180,255,.35);">
+      <div class="group-title">Aportes / Meta <span class="chip">contribuciones</span></div>
 
-    <div class="item">
-      <h3>TORROSS™ Borsa ad angolo -Color ROJO- <span class="pref">Tipo marsupio</span></h3>
-      <p><a class="btn" href="https://torrosscrafted.com/it/products/torross%E2%84%A2-set-uomo-marsupio-regali-1" target="_blank">Ver producto →</a></p>
+      <div class="item">
+        <h3>xBloom Studio</h3>
+        <p><span class="pref">Se aceptan aportes parciales</span> — no es necesario cubrir el total.</p>
+        <p><a class="btn" href="https://xbloom.com/products/xbloom-studio" target="_blank" rel="noopener">Ver producto →</a></p>
+      </div>
     </div>
-
-    <div class="item">
-      <h3>TORROSS™ Custodia per telefono – iPhone <span class="pref">Negro + MagSafe</span></h3>
-      <p><a class="btn" href="https://torrosscrafted.com/it/products/custodia-per-telefono-torross%E2%84%A2-blu-scuro?variant=47173240389956" target="_blank">Ver producto →</a></p>
-    </div>
-
-    <div class="category">Cocina</div>
-
-    <div class="item">
-      <h3>Cazuela de hierro fundido 6L <span class="pref">Negro</span></h3>
-      <p><a class="btn" href="https://www.amazon.es/gp/product/B0BXKHJDRP" target="_blank">Ver producto →</a></p>
-    </div>
-
-    <div class="item">
-      <h3>Soportes de tazas 2 piezas</h3>
-      <p><a class="btn" href="https://www.amazon.es/gp/product/B0C5JYQ9DD" target="_blank">Ver producto →</a></p>
-    </div>
-
-    <div class="category">Hogar inteligente & bienestar</div>
-
-    <div class="item">
-      <h3>Shelly EM – Medidor de energía</h3>
-      <p><a class="btn" href="https://www.amazon.es/gp/product/B0BL7VC2H7" target="_blank">Ver producto →</a></p>
-    </div>
-
-    <div class="item">
-      <h3>Filtros de ducha VeoryFly</h3>
-      <p><a class="btn" href="https://www.amazon.es/gp/product/B0F8VNJ96F" target="_blank">Ver producto →</a></p>
-    </div>
-
-    <div class="item">
-      <h3>Amazon Echo Show 15</h3>
-      <p><a class="btn" href="https://www.amazon.es/gp/product/B0C7XHY6YS" target="_blank">Ver producto →</a></p>
-    </div>
-
-    <div class="category">Aportes / Meta</div>
-
-    <div class="item">
-      <h3>xBloom Studio</h3>
-      <p><span class="pref">Se aceptan aportes parciales</span></p>
-      <p><a class="btn" href="https://xbloom.com/products/xbloom-studio" target="_blank">Ver producto →</a></p>
-    </div>
-
   </section>
 
   <!-- CONTACTO -->
-  <section id="contacto" class="contact-hero">
-    <img class="contact-bg" src="https://raw.githubusercontent.com/Jlugo76/lista-regalos/main/IMG_0896.jpeg">
+  <section id="contacto" class="contact-hero" aria-label="Contacto">
+    <img class="contact-bg" src="https://raw.githubusercontent.com/Jlugo76/lista-regalos/main/IMG_0896.jpeg" alt="">
     <div class="contact-gradient"></div>
 
     <div class="contact-card">
       <h2>Contacto</h2>
       <p><strong>Organizadora:</strong> Grabriela</p>
-      <p class="muted">Si tienes dudas sobre regalos, coordinación o aportes, contacta con Grabriela.</p>
+      <p class="muted">Si tienes dudas sobre regalos, coordinación o aportes, por favor contacta con Grabriela.</p>
     </div>
   </section>
 
@@ -321,3 +376,4 @@
 
 </body>
 </html>
+``
