@@ -231,13 +231,14 @@
       position: absolute;
       inset: 0;
     }
-    .contact__bg img{
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: saturate(1.05);
-      transform: scale(1.02);
-    }
+.contact__bg img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 15%; /* <-- sube el encuadre para que aparezca la cara */
+  filter: saturate(1.05);
+  transform: scale(1.02);
+}
     .contact__scrim{
       position: absolute;
       inset: 0;
