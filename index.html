@@ -181,13 +181,15 @@
     <a href="#contacto">Contacto</a>
   </nav>
 
-  <!-- AUDIO AUTOPLAY (Opción A: inicia mute + botón para activar sonido) -->
-  <audio id="bgm" autoplay loop muted>
-    <source src="https://raw.githubusercontent.com/Jlugo76/lista-regalos/58575521c5600f4745554796995d7f0ce3c86420/song.m4a" type="audio/mp4">
-    <!-- Si subes un .mp3 añade otra línea:
-    <source src="URL_RAW_MP3" type="audio/mpeg">
-    -->
-  </audio>
+
+    <!-- AUDIO AUTOPLAY (mute) + BOTÓN PARA ACTIVAR SONIDO con fade-in -->
+    <audio id="bgm" autoplay loop muted playsinline>
+      https://raw.githubusercontent.com/Jlugo76/lista-regalos/15085f0d6b8e1c027b7939dfd0210bcb6289a627/song.m4a
+      <!-- Si subes un MP3, añade otra línea source:
+      <source src="https://raw.githubusercontent.com/Jlugo76/lista-regalos/main/song.mp3" type="audio/mpeg" />
+      -->
+    </audio>
+
   <button id="playSound" aria-label="Activar sonido">🔊 Activar sonido</button>
 
   <script>
