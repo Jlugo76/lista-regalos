@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lista de Regalos</title>
+
+    <style>
+        body {
+            margin: 0;
+            background: #111;
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+        header {
+            padding: 25px;
+            text-align: center;
+            background: #1f1f1f;
+            font-size: 26px;
+            font-weight: 600;
+        }
+        iframe {
+            width: 100%;
+            height: calc(100vh - 150px);
+            border: none;
+        }
+        footer {
+            text-align: center;
+            padding: 20px;
+            background: #1f1f1f;
+            font-size: 14px;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        🎁 Lista de Regalos de Jhonathan
+    </header>
+
+    <iframe 
+        src="https://secretive-balaur-8b3.notion.site/Regalos-3020a07356e2809bbd3ffb9c5ef62d4f"
+        allowfullscreen
+    ></iframe>
+
+    <footer>
+        Creado con Notion + GitHub Pages
+    </footer>
+
+</body>
+</html>
