@@ -3,812 +3,939 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark light" />
   <title>Lista de Regalos – Jhonathan</title>
 
-  <!-- Tipografía estilo Apple -->
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 
   <style>
-    /* =========================
-       THEME TOKENS & BASE
-       ========================= */
+    /* =========================================================
+       TOKENS
+       ========================================================= */
     :root{
-      /* Tokens neutrales (no cambian por modo) */
-      --accent:#7ed957;
-      --danger:#ff4d4f;
+      --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
-      --radius-1:10px;
-      --radius-2:12px;
-      --radius-3:16px;
-      --blur-1:10px;
-      --blur-2:14px;
+      --space-1: 6px;
+      --space-2: 10px;
+      --space-3: 14px;
+      --space-4: 18px;
+      --space-5: 24px;
+      --space-6: 32px;
+      --space-7: 44px;
+      --space-8: 64px;
 
-      /* Tipografías fluidas */
-      --fs-h1: clamp(28px, 4vw, 42px);
-      --fs-h2: clamp(22px, 3.2vw, 34px);
-      --fs-h3: clamp(18px, 2.4vw, 22px);
-      --fs-body: clamp(14px, 1.8vw, 18px);
+      --r-1: 10px;
+      --r-2: 14px;
+      --r-3: 18px;
+      --r-pill: 999px;
+
+      --h1: clamp(30px, 4vw, 44px);
+      --h2: clamp(22px, 3vw, 32px);
+      --h3: clamp(18px, 2.2vw, 22px);
+      --body: clamp(14px, 1.6vw, 16px);
+
+      --ease: cubic-bezier(.2,.8,.2,1);
+      --t-fast: 160ms;
+      --t: 240ms;
+      --t-slow: 520ms;
+
+      --shadow-1: 0 10px 30px rgba(0,0,0,.22);
+      --shadow-2: 0 18px 60px rgba(0,0,0,.30);
+
+      --accent: #2f6bff;
+      --danger: #ff3b30;
+
+      --blur: 16px;
     }
 
-    /* Tema OSCURO (por defecto) */
+    /* =========================================================
+       THEMES
+       ========================================================= */
     html[data-theme="dark"]{
-      --text:#ffffff;
-      --muted:#cfcfcf;
-      --bg1:#0d0d0d;
-      --bg2:#1a1a1a;
-      --bg3:#0f0f0f;
+      --bg: #0b0c0f;
+      --bg-elev: rgba(255,255,255,.06);
+      --bg-elev-2: rgba(255,255,255,.085);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.70);
+      --muted-2: rgba(255,255,255,.55);
+      --border: rgba(255,255,255,.10);
       --divider: rgba(255,255,255,.08);
 
-      --glass-bg: rgba(255,255,255,.08);
-      --glass-bd: rgba(255,255,255,.18);
-      --glass-shadow: 0 10px 30px rgba(0,0,0,.35);
-
-      --btn-fg:#000;
-      --btn-grad-1:#41e27b;
-      --btn-grad-2:#2abf6a;
+      --glass: rgba(20,22,28,.62);
+      --glass-border: rgba(255,255,255,.10);
     }
 
-    /* Tema CLARO tipo Apple (blanco puro) */
     html[data-theme="light"]{
-      --text:#111111;
-      --muted:#444444;
-      --bg1:#f8f9fb;
-      --bg2:#ffffff;
-      --bg3:#f3f5f7;
-      --divider: rgba(0,0,0,.08);
+      --bg: #f6f7fb;
+      --bg-elev: rgba(255,255,255,.72);
+      --bg-elev-2: rgba(255,255,255,.88);
+      --text: rgba(15,17,20,.92);
+      --muted: rgba(15,17,20,.66);
+      --muted-2: rgba(15,17,20,.50);
+      --border: rgba(15,17,20,.10);
+      --divider: rgba(15,17,20,.08);
 
-      --glass-bg: rgba(255,255,255,.6);
-      --glass-bd: rgba(0,0,0,.08);
-      --glass-shadow: 0 10px 26px rgba(0,0,0,.08);
-
-      --btn-fg:#0b1b12;
-      --btn-grad-1:#86f7a1;
-      --btn-grad-2:#44d57f;
+      --glass: rgba(255,255,255,.70);
+      --glass-border: rgba(15,17,20,.08);
     }
 
-    *{box-sizing:border-box}
-    html, body{height:100%}
+    /* =========================================================
+       BASE
+       ========================================================= */
+    *{ box-sizing: border-box; }
+    html, body{ height: 100%; }
+
     body{
-      margin:0;
-      font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-      color:var(--text);
-      background: linear-gradient(135deg, var(--bg1), var(--bg2) 40%, var(--bg3));
-      overflow-x:hidden;
-      line-height:1.4;
-      scroll-behavior:smooth;
+      margin: 0;
+      font-family: var(--font);
+      color: var(--text);
+      background:
+        radial-gradient(1200px 700px at 20% -10%, rgba(47,107,255,.18), transparent 55%),
+        radial-gradient(900px 600px at 110% 10%, rgba(255,59,48,.12), transparent 55%),
+        var(--bg);
+      line-height: 1.45;
+      letter-spacing: -0.01em;
     }
-    a{ color:#4ea7ff; text-decoration:none }
-    a:hover{ text-decoration:underline }
 
-    /* =========================
-       NAV SUPERIOR (glass)
-       ========================= */
-    nav.topbar{
-      position:fixed; left:0; right:0; top:0;
-      display:flex; justify-content:center; gap:clamp(16px, 5vw, 40px);
-      padding:14px clamp(12px, 4vw, 24px);
-      background:var(--glass-bg);
-      -webkit-backdrop-filter: blur(var(--blur-2)) saturate(120%);
-      backdrop-filter: blur(var(--blur-2)) saturate(120%);
-      border-bottom:1px solid var(--glass-bd);
-      z-index:1000;
-      box-shadow: var(--glass-shadow);
-    }
-    nav.topbar a{ 
-      color:var(--muted); 
-      font-size:clamp(13px, 1.8vw, 15px); 
-      transition:color .25s ease 
-    }
-    nav.topbar a:hover{ color:var(--text) }
+    a{ color: inherit; text-decoration: none; }
+    img{ max-width: 100%; display: block; }
 
-    /* =========================
-       SWITCH TEMA (estilo iOS)
-       ========================= */
-    .theme-switch{
-      position: fixed;
-      top: 14px;
-      right: 14px;
-      z-index: 1100;
-      user-select: none;
+    .container{
+      width: min(980px, calc(100% - 32px));
+      margin-inline: auto;
     }
-    .toggle{
-      --h: 30px; --w: 56px;
-      width: var(--w); height: var(--h);
-      background: var(--glass-bg);
-      border:1px solid var(--glass-bd);
-      border-radius: 999px;
+
+    .skip-link{
+      position: absolute;
+      left: -999px;
+      top: 10px;
+      padding: 10px 12px;
+      background: var(--bg-elev-2);
+      border: 1px solid var(--border);
+      border-radius: var(--r-1);
+      box-shadow: var(--shadow-1);
+    }
+    .skip-link:focus{ left: 16px; z-index: 2000; }
+
+    :focus-visible{
+      outline: 2px solid rgba(47,107,255,.65);
+      outline-offset: 2px;
+    }
+
+    /* =========================================================
+       LAYOUT
+       ========================================================= */
+    .topbar{
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid var(--divider);
+      background: color-mix(in oklab, var(--glass) 92%, transparent);
+      -webkit-backdrop-filter: blur(var(--blur)) saturate(120%);
+      backdrop-filter: blur(var(--blur)) saturate(120%);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+    }
+
+    .topbar__nav{
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .topbar__link{
+      font-size: 14px;
+      color: var(--muted);
+      padding: 8px 10px;
+      border-radius: var(--r-1);
+      transition: background var(--t) var(--ease), color var(--t) var(--ease);
+    }
+    .topbar__link:hover{
+      color: var(--text);
+      background: rgba(255,255,255,.06);
+    }
+    html[data-theme="light"] .topbar__link:hover{
+      background: rgba(15,17,20,.06);
+    }
+
+    .topbar__actions{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hero{
+      padding: var(--space-8) 0 var(--space-7);
+    }
+
+    .hero__inner{
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: var(--space-7);
+      align-items: center;
+    }
+
+    .hero__img{
+      border-radius: var(--r-3);
+      box-shadow: var(--shadow-2);
+      border: 1px solid var(--border);
+    }
+
+    .hero__title{
+      margin: 0 0 10px;
+      font-size: var(--h1);
+      font-weight: 600;
+    }
+
+    .hero__subtitle{
+      margin: 0 0 var(--space-5);
+      font-size: var(--body);
+      color: var(--muted);
+    }
+
+    .section{
+      padding: var(--space-7) 0 var(--space-8);
+    }
+
+    .section__header{
+      text-align: center;
+      margin-bottom: var(--space-6);
+    }
+
+    .section__title{
+      font-size: var(--h2);
+      margin: 0 0 8px;
+      font-weight: 600;
+    }
+
+    .section__desc{
+      margin: 0;
+      color: var(--muted);
+      font-size: var(--body);
+    }
+
+    .contact{
+      position: relative;
+      min-height: 70vh;
+      display: grid;
+      place-items: center;
+      overflow: hidden;
+      border-top: 1px solid var(--divider);
+    }
+
+    .contact__bg{
+      position: absolute;
+      inset: 0;
+    }
+    .contact__bg img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: saturate(1.05);
+      transform: scale(1.02);
+    }
+    .contact__scrim{
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,.70), rgba(0,0,0,.18), rgba(0,0,0,.05));
+    }
+    html[data-theme="light"] .contact__scrim{
+      background: linear-gradient(to top, rgba(0,0,0,.55), rgba(0,0,0,.12), rgba(0,0,0,.04));
+    }
+
+    .contact__inner{ position: relative; z-index: 2; }
+
+    .footer{
+      border-top: 1px solid var(--divider);
+      padding: 18px 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .footer__inner{
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      align-items: center;
+    }
+    .footer__sep{ opacity: .5; }
+
+    @media (max-width: 920px){
+      .hero__inner{
+        grid-template-columns: 1fr;
+        gap: var(--space-5);
+      }
+    }
+
+    /* =========================================================
+       COMPONENTS
+       ========================================================= */
+
+    /* Theme toggle */
+    .icon-toggle{
+      appearance: none;
+      border: 1px solid var(--glass-border);
+      background: var(--glass);
+      border-radius: var(--r-pill);
+      height: 34px;
+      width: 62px;
       position: relative;
       cursor: pointer;
-      -webkit-backdrop-filter: blur(var(--blur-1)) saturate(120%);
-      backdrop-filter: blur(var(--blur-1)) saturate(120%);
-      box-shadow: var(--glass-shadow);
-      transition: background .25s ease, border-color .25s ease;
+      box-shadow: var(--shadow-1);
+      -webkit-backdrop-filter: blur(var(--blur)) saturate(120%);
+      backdrop-filter: blur(var(--blur)) saturate(120%);
+      transition: transform var(--t-fast) var(--ease);
     }
-    .toggle .knob{
-      position:absolute; top:3px; left:3px;
-      width: calc(var(--h) - 6px); height: calc(var(--h) - 6px);
-      border-radius:50%;
-      background: linear-gradient(180deg, #fff, #ddd);
-      display:grid; place-items:center;
-      color:#111; font-size:14px;
-      box-shadow: 0 2px 8px rgba(0,0,0,.25);
-      transition: transform .25s ease, background .25s ease;
-      will-change: transform;
-    }
-    html[data-theme="dark"] .toggle .knob{
-      background: linear-gradient(180deg, #222, #111);
-      color:#f5f5f5;
-    }
-    .toggle.active .knob{ transform: translateX(calc(var(--w) - var(--h))); }
+    .icon-toggle:active{ transform: scale(.98); }
 
-    .toggle .icon{
-      width:16px; height:16px; display:block;
-    }
-    .icon-sun, .icon-moon{ display:none }
-    html[data-theme="light"] .icon-sun{ display:block }
-    html[data-theme="dark"] .icon-moon{ display:block }
-
-    /* =========================
-       HERO / PORTADA
-       ========================= */
-    .hero{
-      min-height:68vh;
-      display:flex; flex-direction:column; align-items:center; justify-content:center;
-      padding-top:90px; text-align:center; animation:fadeIn 1.2s ease;
-    }
-    .hero img{
-      width:min(360px, 82vw);
-      border-radius:22px;
-      box-shadow:0 12px 36px rgba(0,0,0,.5);
-      animation:float 6s ease-in-out infinite;
-    }
-    .hero h1{ margin:22px 0 8px; font-size:var(--fs-h1); font-weight:600 }
-    .hero p{ color:var(--muted); font-size:var(--fs-body) }
-
-    .callout{
-      margin:24px auto 0; max-width:820px;
-      background: rgba(255, 77, 79, .10);
-      border:1px solid rgba(255, 77, 79, .35);
-      border-left:4px solid var(--danger);
-      padding:14px 16px; border-radius:12px; color:#ffdede;
-      -webkit-backdrop-filter:saturate(110%);
-      backdrop-filter:saturate(110%); 
-      font-size:var(--fs-body);
-    }
-    html[data-theme="light"] .callout{ color:#a11; }
-
-    /* =========================
-       SECCIONES / GRUPOS
-       ========================= */
-    .section{
-      margin:80px auto; max-width:min(920px, 94vw);
-      padding:4px 0; 
-    }
-    .section h2{
-      font-size:var(--fs-h2); font-weight:600; text-align:center; margin:0 0 22px;
+    .icon-toggle__track{
+      position:absolute; inset: 0;
+      border-radius: inherit;
     }
 
-    /* Cards de grupo (con reveal) */
-    .group{
-      padding:16px 16px 6px;
-      border-radius:16px; border:1px solid var(--group-border, rgba(255,255,255,.08));
-      background: var(--group-bg, rgba(255,255,255,.02));
-      margin: 18px 0 28px;
-      opacity:0; transform: translateY(16px);
-      transition: opacity .7s ease, transform .7s ease;
-      will-change: transform, opacity;
-    }
-    .group.is-visible{ opacity:1; transform: translateY(0); }
-
-    .group-title{
-      display:flex; align-items:center; gap:10px;
-      font-size:clamp(16px,2.4vw,20px); font-weight:600; letter-spacing:-.2px;
-      margin: 0 0 12px; color:#fff;
-    }
-    html[data-theme="light"] .group-title{ color:#111; }
-
-    .chip{
-      display:inline-block; font-size:12px; padding:3px 8px; border-radius:999px;
-      border:1px solid var(--chip-bd, rgba(255,255,255,.18));
-      background: var(--chip-bg, rgba(255,255,255,.05));
-      color:#eaeaea;
-    }
-    html[data-theme="light"] .chip{ color:#333 }
-
-    /* Paletas por grupo */
-    .theme-coffee { --group-bg: linear-gradient(180deg, rgba(198,140,83,.12), rgba(198,140,83,.03)); --group-border: rgba(198,140,83,.26); --chip-bg: rgba(198,140,83,.18); --chip-bd: rgba(198,140,83,.35); }
-    .theme-beans  { --group-bg: linear-gradient(180deg, rgba(160,100,60,.12), rgba(160,100,60,.03)); --group-border: rgba(160,100,60,.26); --chip-bg: rgba(160,100,60,.18); --chip-bd: rgba(160,100,60,.35); }
-    .theme-smart  { --group-bg: linear-gradient(180deg, rgba(79,195,247,.12), rgba(79,195,247,.03)); --group-border: rgba(79,195,247,.26); --chip-bg: rgba(79,195,247,.18); --chip-bd: rgba(79,195,247,.35); }
-    .theme-kitchen{ --group-bg: linear-gradient(180deg, rgba(144,164,174,.12), rgba(144,164,174,.03)); --group-border: rgba(144,164,174,.26); --chip-bg: rgba(144,164,174,.18); --chip-bd: rgba(144,164,174,.35); }
-    .theme-leather{ --group-bg: linear-gradient(180deg, rgba(176,141,87,.12), rgba(176,141,87,.03)); --group-border: rgba(176,141,87,.26); --chip-bg: rgba(176,141,87,.18); --chip-bd: rgba(176,141,87,.35); }
-    .theme-well   { --group-bg: linear-gradient(180deg, rgba(38,166,154,.12), rgba(38,166,154,.03)); --group-border: rgba(38,166,154,.26); --chip-bg: rgba(38,166,154,.18); --chip-bd: rgba(38,166,154,.35); }
-
-    .item{ margin:0 0 18px; padding:0 0 16px; border-bottom:1px solid var(--divider) }
-    .item:last-child{ border-bottom:none; padding-bottom:6px }
-    .item h3{ font-size:var(--fs-h3); margin:0 0 6px; color:#fff }
-    .item p{ margin:4px 0; color:var(--muted); font-size:var(--fs-body) }
-    html[data-theme="light"] .item h3{ color:#111 }
-
-    .pref{
-      display:inline-block; padding:3px 8px; margin-left:6px;
-      background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12);
-      font-size:12px; border-radius:999px;
-    }
-    html[data-theme="light"] .pref{
-      background:rgba(0,0,0,.04); border-color:rgba(0,0,0,.08);
+    .icon-toggle__thumb{
+      position:absolute;
+      top: 4px; left: 4px;
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: var(--bg-elev-2);
+      border: 1px solid var(--border);
+      transition: transform var(--t) var(--ease);
     }
 
-    /* =========================
-       BOTONES (micro-interacciones)
-       ========================= */
+    .icon{
+      width: 15px;
+      height: 15px;
+      color: var(--muted);
+    }
+    .icon--sun{ display:none; }
+    .icon--moon{ display:none; }
+    html[data-theme="light"] .icon--sun{ display:block; }
+    html[data-theme="dark"] .icon--moon{ display:block; }
+
+    .icon-toggle.is-light .icon-toggle__thumb{
+      transform: translateX(28px);
+    }
+
+    /* Audio chip */
+    .chip-btn{
+      border: 1px solid var(--glass-border);
+      background: var(--glass);
+      color: var(--text);
+      border-radius: var(--r-pill);
+      padding: 8px 12px;
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      cursor: pointer;
+      box-shadow: var(--shadow-1);
+      -webkit-backdrop-filter: blur(var(--blur)) saturate(120%);
+      backdrop-filter: blur(var(--blur)) saturate(120%);
+      transition: background var(--t) var(--ease), transform var(--t-fast) var(--ease);
+    }
+    .chip-btn:hover{ background: color-mix(in oklab, var(--glass) 86%, transparent); }
+    .chip-btn:active{ transform: scale(.98); }
+    .chip-btn__text{ font-size: 13px; color: var(--muted); }
+
+    /* Notice */
+    .notice{
+      border: 1px solid var(--border);
+      background: var(--bg-elev);
+      border-radius: var(--r-2);
+      padding: 14px 14px;
+      box-shadow: var(--shadow-1);
+    }
+    .notice__title{ font-weight: 600; margin-bottom: 6px; }
+    .notice__body{ color: var(--muted); }
+    .notice--danger{
+      border-color: color-mix(in oklab, var(--danger) 45%, var(--border));
+      background: color-mix(in oklab, var(--danger) 10%, var(--bg-elev));
+    }
+
+    /* Panel (grupo) */
+    .panel{
+      border: 1px solid var(--border);
+      background: var(--bg-elev);
+      border-radius: var(--r-3);
+      padding: 16px;
+      margin: 18px 0 22px;
+      box-shadow: var(--shadow-1);
+    }
+    .panel__header{
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .panel__title{
+      margin: 0;
+      font-size: var(--h3);
+      font-weight: 600;
+    }
+    .badge{
+      font-size: 12px;
+      color: var(--muted);
+      padding: 6px 10px;
+      border-radius: var(--r-pill);
+      border: 1px solid var(--border);
+      background: var(--bg-elev-2);
+      white-space: nowrap;
+    }
+    .panel__items{ display: grid; gap: 12px; }
+
+    .item{
+      border-top: 1px solid var(--divider);
+      padding-top: 12px;
+    }
+    .item:first-child{ border-top: 0; padding-top: 0; }
+    .item__head{
+      display:flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .item__title{
+      margin: 0;
+      font-size: 15px;
+      font-weight: 600;
+    }
+    .item__desc{
+      margin: 8px 0 10px;
+      color: var(--muted);
+      font-size: var(--body);
+    }
+    .tag{
+      font-size: 12px;
+      color: var(--muted-2);
+      padding: 5px 10px;
+      border-radius: var(--r-pill);
+      border: 1px solid var(--border);
+      background: transparent;
+    }
+
+    /* CTA */
     .btn{
-      position:relative;
-      display:inline-block;
-      padding:12px 18px;
-      border-radius:12px;
-      background:linear-gradient(135deg, var(--btn-grad-1), var(--btn-grad-2));
-      color:var(--btn-fg);
-      font-weight:600;
-      border:none;
-      box-shadow:0 6px 16px rgba(0,0,0,.35);
-      transform:translateY(0);
-      transition: transform .25s ease, box-shadow .25s ease, filter .25s ease;
-      overflow:hidden;
-      isolation:isolate;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: color-mix(in oklab, var(--accent) 14%, var(--bg-elev));
+      color: var(--text);
+      font-weight: 600;
+      font-size: 13px;
+      transition: transform var(--t-fast) var(--ease), background var(--t) var(--ease);
+      width: fit-content;
     }
     .btn:hover{
-      transform:translateY(-4px) scale(1.05);
-      box-shadow:0 12px 26px rgba(0,0,0,.45);
-      filter:brightness(1.12);
-      text-decoration:none;
+      transform: translateY(-1px);
+      background: color-mix(in oklab, var(--accent) 20%, var(--bg-elev));
     }
-    .btn:active{ transform:translateY(1px) }
+    .btn:active{ transform: translateY(0); }
 
-    /* Shimmer en hover */
-    .btn::after{
-      content:"";
-      position:absolute; inset:-150% -20%;
-      background: linear-gradient(115deg, transparent 40%, rgba(255,255,255,.45) 50%, transparent 60%);
-      transform: translateX(-120%);
-      transition: transform .6s ease;
-      pointer-events:none;
-      mix-blend-mode: screen;
-    }
-    .btn:hover::after{ transform: translateX(120%); }
-
-    /* Ripple al click */
-    .ripple{
-      position:absolute; border-radius:50%;
-      transform:scale(0);
-      background: rgba(255,255,255,.5);
-      animation:ripple .6s ease-out forwards;
-      pointer-events:none;
-      mix-blend-mode: screen;
-    }
-    @keyframes ripple{
-      to{ transform:scale(6); opacity:0 }
-    }
-
-    /* =========================
-       ÍNDICE LATERAL INTELIGENTE
-       ========================= */
+    /* Side index */
     .side-index{
       position: fixed;
-      top: 110px;
       left: 16px;
+      top: 92px;
       z-index: 900;
-      display: flex; flex-direction: column; gap: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
       padding: 10px;
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-bd);
-      border-radius: 14px;
-      box-shadow: var(--glass-shadow);
-      -webkit-backdrop-filter: blur(var(--blur-1)) saturate(120%);
-      backdrop-filter: blur(var(--blur-1)) saturate(120%);
-      opacity:0; transform: translateX(-10px);
-      transition: opacity .35s ease, transform .35s ease;
-      pointer-events:none; /* hasta que se muestre */
+      border-radius: var(--r-2);
+      border: 1px solid var(--glass-border);
+      background: var(--glass);
+      box-shadow: var(--shadow-1);
+      -webkit-backdrop-filter: blur(var(--blur)) saturate(120%);
+      backdrop-filter: blur(var(--blur)) saturate(120%);
+      opacity: 0;
+      transform: translateX(-8px);
+      pointer-events: none;
+      transition: opacity var(--t) var(--ease), transform var(--t) var(--ease);
     }
-    .side-index.show{
-      opacity:1; transform: translateX(0);
-      pointer-events:auto;
+    .side-index.is-visible{
+      opacity: 1;
+      transform: translateX(0);
+      pointer-events: auto;
     }
-    .side-index a{
-      display:flex; align-items:center; gap:10px;
-      color:var(--muted);
-      border-radius:10px;
-      padding:8px 10px;
-      transition: background .25s ease, color .25s ease;
-      white-space:nowrap;
+    .side-index__link{
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      color: var(--muted);
+      transition: background var(--t) var(--ease), color var(--t) var(--ease);
     }
-    .side-index a:hover{ background: rgba(255,255,255,.08); color:var(--text) }
-    html[data-theme="light"] .side-index a:hover{ background: rgba(0,0,0,.06); }
-
-    .side-index .ico{
-      width:20px; height:20px; display:block; color:currentColor;
-    }
-    .side-index .label{ display:none; font-size:13px; }
-
-    /* Híbrido: en pantallas grandes, muestra texto */
-    @media (min-width: 1200px){
-      .side-index .label{ display:inline }
-    }
-
-    /* Item activo */
-    .side-index a.active{
+    .side-index__link:hover{
       color: var(--text);
-      background: rgba(126,217,87, .15);
-      border: 1px solid rgba(126,217,87,.35);
+      background: rgba(255,255,255,.06);
+    }
+    html[data-theme="light"] .side-index__link:hover{
+      background: rgba(15,17,20,.06);
+    }
+    .side-index__dot{
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--muted-2);
+    }
+    .side-index__link.is-active{
+      color: var(--text);
+      background: color-mix(in oklab, var(--accent) 16%, transparent);
+      border: 1px solid color-mix(in oklab, var(--accent) 35%, var(--border));
+    }
+    .side-index__link.is-active .side-index__dot{ background: var(--accent); }
+
+    @media (max-width: 900px){
+      .side-index{ display:none; }
     }
 
-    /* Ocultar en móvil */
-    @media (max-width: 768px){
-      .side-index{ display:none }
+    /* Contact card */
+    .card{
+      width: min(760px, 92vw);
+      padding: 18px 18px;
+      border-radius: var(--r-3);
+      border: 1px solid var(--glass-border);
+      background: var(--glass);
+      box-shadow: var(--shadow-2);
+      -webkit-backdrop-filter: blur(var(--blur)) saturate(140%);
+      backdrop-filter: blur(var(--blur)) saturate(140%);
+    }
+    .card__title{ margin: 0 0 10px; font-size: var(--h2); }
+    .card__row{ margin: 0 0 6px; }
+    .card__muted{ margin: 0; color: var(--muted); }
+
+    /* Reveal */
+    .reveal{
+      opacity: 0;
+      transform: translateY(14px);
+      transition: opacity var(--t-slow) var(--ease), transform var(--t-slow) var(--ease);
+    }
+    .reveal.is-visible{
+      opacity: 1;
+      transform: translateY(0);
     }
 
-    /* =========================
-       CONTACTO (glass fuerte)
-       ========================= */
-    .contact-hero{
-      position:relative; min-height:85vh;
-      display:flex; align-items:flex-end; justify-content:center;
-      text-align:center; margin-top:90px; overflow:hidden;
-      border-top:1px solid var(--divider);
-    }
-    .contact-bg{
-      position:absolute; inset:0; width:100%; height:100%;
-      object-fit:cover; object-position:50% 18%;
-      transform:scale(1.02); filter:saturate(105%);
-    }
-    .contact-gradient{
-      position:absolute; inset:0;
-      background:linear-gradient(to top, rgba(0,0,0,.65), rgba(0,0,0,.15), transparent);
-    }
-    .contact-card{
-      position:relative; z-index:2; margin:0 auto 36px;
-      padding:20px 22px; 
-      background: var(--glass-bg);
-      -webkit-backdrop-filter: blur(18px) saturate(140%);
-      backdrop-filter: blur(18px) saturate(140%);
-      border-radius:16px;
-      border:1px solid var(--glass-bd);
-      max-width:min(840px, 92vw);
-      box-shadow: var(--glass-shadow);
-    }
-
-    /* =========================
-       BOTÓN AUDIO (glass)
-       ========================= */
-    #playSound{
-      position:fixed; bottom:20px; right:20px;
-      padding:10px 14px; background:var(--glass-bg);
-      border-radius:12px; border:1px solid var(--glass-bd);
-      -webkit-backdrop-filter: blur(var(--blur-1)) saturate(120%);
-      backdrop-filter: blur(var(--blur-1)) saturate(120%);
-      color:var(--text); cursor:pointer;
-      font-size:14px; z-index:9999;
-      transition:.25s;
-      box-shadow: var(--glass-shadow);
-    }
-    #playSound:hover{ background:rgba(255,255,255,.25) }
-    html[data-theme="light"] #playSound:hover{ background:rgba(0,0,0,.06) }
-
-    footer{
-      text-align:center; padding:28px 12px; color:var(--muted);
-      font-size:14px; border-top:1px solid var(--divider);
-    }
-
-    /* =========================
-       ANIMACIONES & ACCESIBILIDAD
-       ========================= */
-    @keyframes float{0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)}}
-    @keyframes fadeIn{from{opacity:0} to{opacity:1}}
-
-    /* Reduced motion */
     @media (prefers-reduced-motion: reduce){
-      .hero img{ animation:none }
-      .group{ transition:none }
-      .btn::after{ display:none }
+      .reveal{ transition: none; transform: none; opacity: 1; }
+      .btn, .chip-btn, .icon-toggle{ transition: none; }
     }
   </style>
 </head>
+
 <body>
+  <a class="skip-link" href="#lista">Saltar a la lista</a>
 
-  <!-- NAV (arriba) -->
-  <nav class="topbar" aria-label="Navegación principal">
-    <a href="#inicio">Inicio</a>
-    <a href="#lista">Lista</a>
-    <a href="#contacto">Contacto</a>
-  </nav>
+  <header class="topbar" role="banner">
+    <nav class="topbar__nav" aria-label="Navegación principal">
+      <a class="topbar__link" href="#inicio">Inicio</a>
+      <a class="topbar__link" href="#lista">Lista</a>
+      <a class="topbar__link" href="#contacto">Contacto</a>
+    </nav>
 
-  <!-- SWITCH DE TEMA (flotante arriba derecha) -->
-  <div class="theme-switch" aria-live="polite">
-    <button id="themeToggle" class="toggle" type="button" aria-label="Cambiar tema claro/oscuro" title="Tema claro/oscuro">
-      <span class="knob">
-        <!-- Iconos lineales estilo iOS (SVG simple) -->
-        <svg class="icon-sun icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <circle cx="12" cy="12" r="4"></circle>
-          <path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5"/>
-        </svg>
-        <svg class="icon-moon icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-        </svg>
-      </span>
-    </button>
-  </div>
+    <div class="topbar__actions">
+      <button id="themeToggle" class="icon-toggle" type="button" aria-label="Cambiar tema" title="Tema">
+        <span class="icon-toggle__track" aria-hidden="true"></span>
+        <span class="icon-toggle__thumb" aria-hidden="true">
+          <svg class="icon icon--sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path d="M12 2v2M12 20v2M4 12H2M22 12h-2M5 5l1.5 1.5M17.5 17.5L19 19M5 19l1.5-1.5M17.5 6.5L19 5"/>
+          </svg>
+          <svg class="icon icon--moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+        </span>
+      </button>
 
-  <!-- AUDIO -->
-  <audio id="bgm" autoplay loop muted playsinline>
+      <button id="audioToggle" class="chip-btn" type="button" aria-label="Activar sonido" aria-pressed="false">
+        <span class="chip-btn__icon" aria-hidden="true">🔈</span>
+        <span class="chip-btn__text">Sonido</span>
+      </button>
+    </div>
+  </header>
+
+  <audio id="bgm" preload="auto" loop muted playsinline>
     <source src="https://raw.githubusercontent.com/Jlugo76/lista-regalos/main/song.m4a" type="audio/mp4">
-    <!-- Alternativa MP3 (si la subes):
-    <source src="https://raw.githubusercontent.com/Jlugo76/lista-regalos/main/song.mp3" type="audio/mpeg">
-    -->
   </audio>
-  <button id="playSound" aria-label="Activar sonido">🔊 Activar sonido</button>
 
-  <!-- PORTADA -->
-  <section id="inicio" class="hero" aria-label="Portada">
-    <img src="https://raw.githubusercontent.com/Jlugo76/lista-regalos/main/Portada.JPG" alt="Portada">
-    <h1>Lista de Regalos</h1>
-    <p style="color:#22d27a;">Cosillas que me gustaría tener 😅</p>
+  <main>
+    <section id="inicio" class="hero" aria-label="Portada">
+      <div class="container hero__inner">
+        <figure class="hero__media">
+          <img class="hero__img" src="https://raw.githubusercontent.com/Jlugo76/lista-regalos/main/Portada.JPG" alt="Portada de la lista de regalos" loading="eager" decoding="async"/>
+        </figure>
 
-    <div class="callout" role="note" aria-label="Aviso importante">
-      <strong>Importante:</strong> No se aceptan regalos de <u>ropa</u> ni artículos derivados (incluye vales, accesorios o similares).
+        <div class="hero__content">
+          <h1 class="hero__title">Lista de Regalos</h1>
+          <p class="hero__subtitle">Cosillas que me gustaría tener 😅</p>
+
+          <aside class="notice notice--danger" role="note" aria-label="Aviso importante">
+            <div class="notice__title">Importante</div>
+            <div class="notice__body">
+              No se aceptan regalos de <strong>ropa</strong> ni artículos derivados (incluye vales, accesorios o similares).
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <aside id="sideIndex" class="side-index" aria-label="Índice de secciones">
+      <a class="side-index__link" href="#setup-cafetero" data-target="setup-cafetero"><span class="side-index__dot" aria-hidden="true"></span><span class="side-index__label">Setup cafetero</span></a>
+      <a class="side-index__link" href="#cafe-grano" data-target="cafe-grano"><span class="side-index__dot" aria-hidden="true"></span><span class="side-index__label">Café en grano</span></a>
+      <a class="side-index__link" href="#domotica" data-target="domotica"><span class="side-index__dot" aria-hidden="true"></span><span class="side-index__label">Domótica</span></a>
+      <a class="side-index__link" href="#bienestar" data-target="bienestar"><span class="side-index__dot" aria-hidden="true"></span><span class="side-index__label">Bienestar / Agua</span></a>
+      <a class="side-index__link" href="#cocina" data-target="cocina"><span class="side-index__dot" aria-hidden="true"></span><span class="side-index__label">Cocina</span></a>
+      <a class="side-index__link" href="#cuero" data-target="cuero"><span class="side-index__dot" aria-hidden="true"></span><span class="side-index__label">Cuero</span></a>
+      <a class="side-index__link" href="#aportes" data-target="aportes"><span class="side-index__dot" aria-hidden="true"></span><span class="side-index__label">Aportes</span></a>
+    </aside>
+
+    <section id="lista" class="section" aria-label="Lista de regalos">
+      <div class="container">
+        <header class="section__header">
+          <h2 class="section__title">Lista de Regalos</h2>
+          <p class="section__desc">Opciones agrupadas por categoría.</p>
+        </header>
+
+        <article id="setup-cafetero" class="panel reveal">
+          <header class="panel__header">
+            <h3 class="panel__title">Setup cafetero</h3>
+            <span class="badge">equipos &amp; accesorios</span>
+          </header>
+
+          <div class="panel__items">
+            <article class="item">
+              <div class="item__head">
+                <h4 class="item__title">MHW-3Bomber Rain Pour-Over Coffee Splitter</h4>
+                <span class="tag">Color: Negro (preferido)</span>
+              </div>
+              <p class="item__desc">Divisor de vertido tipo “rain” para pour-over; flujo uniforme y estético.</p>
+              <a class="btn" href="https://mhw3bomber.com/es/products/mhw-3bomber-rain-pour-over-coffee-splitter" target="_blank" rel="noopener">Ver producto</a>
+            </article>
+
+            <article class="item">
+              <div class="item__head">
+                <h4 class="item__title">MHW-3Bomber Cold Brew Coffee Maker</h4>
+                <span class="tag">Color: Negro</span>
+              </div>
+              <p class="item__desc">Cafetera para cold brew; diseño limpio y fácil de usar.</p>
+              <a class="btn" href="https://mhw3bomber.com/es/products/mhw-3bomber-cold-brew-coffee-maker?variant=45144112660618" target="_blank" rel="noopener">Ver producto</a>
+            </article>
+
+            <article class="item">
+              <div class="item__head">
+                <h4 class="item__title">Filtro metálico reutilizable para AeroPress</h4>
+              </div>
+              <p class="item__desc">Filtro de acero inoxidable para AeroPress estándar (1 paquete).</p>
+              <a class="btn" href="https://www.amazon.es/gp/product/B0B3BTYSTD/ref=ox_sc_act_title_12?smid=A1TVW9ONTBQJAY&th=1" target="_blank" rel="noopener">Ver producto</a>
+            </article>
+
+            <article class="item">
+              <div class="item__head">
+                <h4 class="item__title">Yamazaki TOWER – Coffee Filter Case</h4>
+              </div>
+              <p class="item__desc">Organizador para filtros de café. Medidas 18.4 × 9.2 × 15.4 cm.</p>
+              <a class="btn" href="https://www.amazon.es/gp/product/B0CDZWX1PG/ref=ox_sc_act_title_16?smid=A1AT7YVPFBWXBL&th=1" target="_blank" rel="noopener">Ver producto</a>
+            </article>
+          </div>
+        </article>
+
+        <article id="cafe-grano" class="panel reveal">
+          <header class="panel__header">
+            <h3 class="panel__title">Café en grano</h3>
+            <span class="badge">especialidad</span>
+          </header>
+
+          <div class="panel__items">
+            <article class="item">
+              <h4 class="item__title">Colombia LYNX 86.5 SCA</h4>
+              <p class="item__desc">Lavado con fermentación; ideal para métodos suaves.</p>
+              <a class="btn" href="https://salem.cafe/products/cafe-de-especialidad-de-colombia-lavado-con-fermentacion-lynx-86-5-sca" target="_blank" rel="noopener">Ver producto</a>
+            </article>
+
+            <article class="item">
+              <h4 class="item__title">Kenia de especialidad</h4>
+              <p class="item__desc">Perfil brillante y frutal; excelente para pour-over.</p>
+              <a class="btn" href="https://salem.cafe/products/cafe-de-kenia-de-especialidad" target="_blank" rel="noopener">Ver producto</a>
+            </article>
+          </div>
+        </article>
+
+        <article id="domotica" class="panel reveal">
+          <header class="panel__header">
+            <h3 class="panel__title">Domótica / Hogar inteligente</h3>
+            <span class="badge">smart home</span>
+          </header>
+
+          <div class="panel__items">
+            <article class="item">
+              <h4 class="item__title">Shelly EM – Medidor de Energía Wi-Fi (1 pinza 50A)</h4>
+              <p class="item__desc">Monitoreo de consumo con historial 365 días. Compatible con Alexa y Google Home.</p>
+              <a class="btn" href="https://www.amazon.es/gp/product/B0BL7VC2H7/ref=ox_sc_act_title_20?smid=A8K5X0OBKV2JK&psc=1" target="_blank" rel="noopener">Ver producto</a>
+            </article>
+
+            <article class="item">
+              <h4 class="item__title">Amazon Echo Show 15 (última generación)</h4>
+              <p class="item__desc">Pantalla inteligente 15,6″ Full HD con Fire TV y Alexa.</p>
+              <a class="btn" href="https://www.amazon.es/gp/product/B0C7XHY6YS/ref=ox_sc_act_title_41?smid=A1AT7YVPFBWXBL&th=1" target="_blank" rel="noopener">Ver producto</a>
+            </article>
+          </div>
+        </article>
+
+        <article id="bienestar" class="panel reveal">
+          <header class="panel__header">
+            <h3 class="panel__title">Bienestar / Agua</h3>
+            <span class="badge">baño</span>
+          </header>
+
+          <div class="panel__items">
+            <article class="item">
+              <h4 class="item__title">Pack 2 – Filtros de ducha (VeoryFly)</h4>
+              <p class="item__desc">Reduce cloro, metales pesados y sedimentos. Cartuchos intercambiables.</p>
+              <a class="btn" href="https://www.amazon.es/gp/product/B0F8VNJ96F/ref=ox_sc_act_title_23?smid=A2AEKTJUXTI38Z&th=1" target="_blank" rel="noopener">Ver producto</a>
+            </article>
+          </div>
+        </article>
+
+        <article id="cocina" class="panel reveal">
+          <header class="panel__header">
+            <h3 class="panel__title">Cocina</h3>
+            <span class="badge">cocción &amp; organización</span>
+          </header>
+
+          <div class="panel__items">
+            <article class="item">
+              <div class="item__head">
+                <h4 class="item__title">Cazuela de hierro fundido 6 L – Ø28 cm</h4>
+                <span class="tag">Negro</span>
+              </div>
+              <p class="item__desc">Compatible con inducción y todas las fuentes de calor. Versátil para guisos.</p>
+              <a class="btn" href="https://www.amazon.es/gp/product/B0BXKHJDRP/ref=ox_sc_act_title_10?smid=A1QFIC0N9WI4E7&th=1" target="_blank" rel="noopener">Ver producto</a>
+            </article>
+
+            <article class="item">
+              <h4 class="item__title">Soportes de tazas (2 piezas) – Negro</h4>
+              <p class="item__desc">Rack sin perforación, con 4 estantes para organizar tazas.</p>
+              <a class="btn" href="https://www.amazon.es/gp/product/B0C5JYQ9DD/ref=ox_sc_act_title_28?smid=APH9MJG3IM2YG&psc=1" target="_blank" rel="noopener">Ver producto</a>
+            </article>
+          </div>
+        </article>
+
+        <article id="cuero" class="panel reveal">
+          <header class="panel__header">
+            <h3 class="panel__title">Accesorios de cuero (TORROSS)</h3>
+            <span class="badge">premium</span>
+          </header>
+
+          <div class="panel__items">
+            <article class="item">
+              <div class="item__head">
+                <h4 class="item__title">TORROSS™ Borsa ad angolo -ROJO-</h4>
+                <span class="tag">Tipo marsupio</span>
+              </div>
+              <a class="btn" href="https://torrosscrafted.com/es/products/torross%E2%84%A2-conjunto-hombre-rinonera-regalos-1" target="_blank" rel="noopener">Ver producto</a>
+            </article>
+
+            <article class="item">
+              <div class="item__head">
+                <h4 class="item__title">TORROSS™ Custodia per telefono – iPhone</h4>
+                <span class="tag">Negro + MagSafe</span>
+              </div>
+              <a class="btn" href="https://torrosscrafted.com/it/products/custodia-per-telefono-torross%E2%84%A2-blu-scuro?variant=47173240389956" target="_blank" rel="noopener">Ver producto</a>
+            </article>
+          </div>
+        </article>
+
+        <article id="aportes" class="panel reveal">
+          <header class="panel__header">
+            <h3 class="panel__title">Aportes / Meta</h3>
+            <span class="badge">contribuciones</span>
+          </header>
+
+          <div class="panel__items">
+            <article class="item">
+              <h4 class="item__title">xBloom Studio</h4>
+              <p class="item__desc"><span class="tag">Se aceptan aportes parciales</span> — no es necesario cubrir el total.</p>
+              <a class="btn" href="https://xbloom.com/products/xbloom-studio" target="_blank" rel="noopener">Ver producto</a>
+            </article>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <section id="contacto" class="contact" aria-label="Contacto">
+      <div class="contact__bg" aria-hidden="true">
+        <img src="https://raw.githubusercontent.com/Jlugo76/lista-regalos/main/IMG_0896.jpeg" alt="" loading="lazy" decoding="async">
+        <div class="contact__scrim"></div>
+      </div>
+
+      <div class="container contact__inner">
+        <div class="card">
+          <h2 class="card__title">Contacto</h2>
+          <p class="card__row"><strong>Organizadora:</strong> Grabriela</p>
+          <p class="card__muted">Si tienes dudas sobre regalos, coordinación o aportes, por favor contacta con Grabriela.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span>Creado por Jhonathan</span>
+      <span class="footer__sep">•</span>
+      <span>No preguntes cómo 😄</span>
     </div>
-  </section>
-
-  <!-- ÍNDICE LATERAL HÍBRIDO (auto-ocultable) -->
-  <aside id="sideIndex" class="side-index" aria-label="Índice de secciones">
-    <!-- Cada ítem: icono lineal (SVG) + etiqueta (muestra en pantallas grandes) -->
-    <a href="#setup-cafetero" data-target="setup-cafetero">
-      <!-- Taza de café -->
-      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M4 10h12a4 4 0 0 1 0 8H8a4 4 0 0 1-4-4v-4z"></path>
-        <path d="M16 10h2a3 3 0 1 1 0 6"></path>
-        <path d="M6 18v1c0 1.1 4 2 6 2s6-.9 6-2v-1"></path>
-      </svg>
-      <span class="label">Setup cafetero</span>
-    </a>
-    <a href="#cafe-grano" data-target="cafe-grano">
-      <!-- Grano de café -->
-      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M12 3c4.97 0 9 4.03 9 9 0 4.97-4.03 9-9 9S3 16.97 3 12 7.03 3 12 3z"></path>
-        <path d="M9 7c1.5 4 5 5 6 10"></path>
-      </svg>
-      <span class="label">Café en grano</span>
-    </a>
-    <a href="#domotica" data-target="domotica">
-      <!-- Casa / domótica -->
-      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M3 11l9-7 9 7"></path>
-        <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"></path>
-      </svg>
-      <span class="label">Domótica</span>
-    </a>
-    <a href="#bienestar" data-target="bienestar">
-      <!-- Ducha -->
-      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M4 4h10a4 4 0 0 1 4 4v2"></path>
-        <path d="M8 10v10"></path>
-        <path d="M6 14h4M6 17h4M6 20h4"></path>
-      </svg>
-      <span class="label">Bienestar/Agua</span>
-    </a>
-    <a href="#cocina" data-target="cocina">
-      <!-- Olla -->
-      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <rect x="3" y="10" width="18" height="8" rx="2" ry="2"></rect>
-        <path d="M7 10V8h10v2"></path>
-        <path d="M5 14h14"></path>
-      </svg>
-      <span class="label">Cocina</span>
-    </a>
-    <a href="#cuero" data-target="cuero">
-      <!-- Bolsa -->
-      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M6 7h12l1 12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L6 7z"></path>
-        <path d="M9 7a3 3 0 0 1 6 0"></path>
-      </svg>
-      <span class="label">Cuero</span>
-    </a>
-    <a href="#aportes" data-target="aportes">
-      <!-- Regalo -->
-      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <rect x="3" y="8" width="18" height="14" rx="2"></rect>
-        <path d="M12 8v14"></path>
-        <path d="M3 12h18"></path>
-        <path d="M12 8c-1.5 0-3-1-3-2.5S10.5 3 12 5c1.5-2 3-1.5 3 0S13.5 8 12 8z"></path>
-      </svg>
-      <span class="label">Aportes</span>
-    </a>
-  </aside>
-
-  <!-- LISTA -->
-  <section id="lista" class="section" aria-label="Lista de regalos">
-    <h2>Lista de Regalos</h2>
-
-    <!-- SETUP CAFETERO -->
-    <div id="setup-cafetero" class="group theme-coffee reveal">
-      <div class="group-title">Setup cafetero <span class="chip">equipos &amp; accesorios</span></div>
-
-      <div class="item">
-        <h3>MHW‑3Bomber Rain Pour‑Over Coffee Splitter <span class="pref">Color: Negro (preferido)</span></h3>
-        <p>Divisor de vertido tipo “rain” para pour‑over; flujo uniforme y muy estético.</p>
-        <p><a class="btn" href="https://mhw3bomber.com/es/products/mhw-3bomber-rain-pour-over-coffee-splitter" target="_blank" rel="noopener">Ver producto →</a></p>
-      </div>
-
-      <div class="item">
-        <h3>MHW‑3Bomber Cold Brew Coffee Maker <span class="pref">Color: Negro</span></h3>
-        <p>Cafetera para cold brew; diseño limpio y fácil de usar.</p>
-        <p><a class="btn" href="https://mhw3bomber.com/es/products/mhw-3bomber-cold-brew-coffee-maker?variant=45144112660618" target="_blank" rel="noopener">Ver producto →</a></p>
-      </div>
-
-      <div class="item">
-        <h3>Filtro metálico reutilizable para AeroPress</h3>
-        <p>Filtro de acero inoxidable para AeroPress estándar (1 paquete).</p>
-        <p><a class="btn" href="https://www.amazon.es/gp/product/B0B3BTYSTD/ref=ox_sc_act_title_12?smid=A1TVW9ONTBQJAY&th=1" target="_blank" rel="noopener">Ver producto →</a></p>
-      </div>
-
-      <div class="item">
-        <h3>Yamazaki TOWER – Coffee Filter Case</h3>
-        <p>Organizador para filtros de café. Medidas 18.4 × 9.2 × 15.4 cm.</p>
-        <p><a class="btn" href="https://www.amazon.es/gp/product/B0CDZWX1PG/ref=ox_sc_act_title_16?smid=A1AT7YVPFBWXBL&th=1" target="_blank" rel="noopener">Ver producto →</a></p>
-      </div>
-    </div>
-
-    <!-- CAFÉ EN GRANO -->
-    <div id="cafe-grano" class="group theme-beans reveal">
-      <div class="group-title">Café en grano <span class="chip">especialidad</span></div>
-
-      <div class="item">
-        <h3>Colombia LYNX 86.5 SCA</h3>
-        <p>Lavado con fermentación; ideal para métodos suaves.</p>
-        <p><a class="btn" href="https://salem.cafe/products/cafe-de-especialidad-de-colombia-lavado-con-fermentacion-lynx-86-5-sca" target="_blank" rel="noopener">Ver producto →</a></p>
-      </div>
-
-      <div class="item">
-        <h3>Kenia de especialidad</h3>
-        <p>Perfil brillante y frutal; excelente para pour‑over.</p>
-        <p><a class="btn" href="https://salem.cafe/products/cafe-de-kenia-de-especialidad" target="_blank" rel="noopener">Ver producto →</a></p>
-      </div>
-    </div>
-
-    <!-- DOMÓTICA -->
-    <div id="domotica" class="group theme-smart reveal">
-      <div class="group-title">Domótica / Hogar inteligente <span class="chip">smart home</span></div>
-
-      <div class="item">
-        <h3>Shelly EM – Medidor de Energía Wi‑Fi (1 pinza 50A)</h3>
-        <p>Monitoreo de consumo con historial 365 días. Compatible con Alexa y Google Home.</p>
-        <p><a class="btn" href="https://www.amazon.es/gp/product/B0BL7VC2H7/ref=ox_sc_act_title_20?smid=A8K5X0OBKV2JK&psc=1" target="_blank" rel="noopener">Ver producto →</a></p>
-      </div>
-
-      <div class="item">
-        <h3>Amazon Echo Show 15 (última generación)</h3>
-        <p>Pantalla inteligente 15,6″ Full HD con Fire TV y Alexa.</p>
-        <p><a class="btn" href="https://www.amazon.es/gp/product/B0C7XHY6YS/ref=ox_sc_act_title_41?smid=A1AT7YVPFBWXBL&th=1" target="_blank" rel="noopener">Ver producto →</a></p>
-      </div>
-    </div>
-
-    <!-- BIENESTAR -->
-    <div id="bienestar" class="group theme-well reveal">
-      <div class="group-title">Bienestar / Agua <span class="chip">baño</span></div>
-
-      <div class="item">
-        <h3>Pack 2 – Filtros de ducha (VeoryFly)</h3>
-        <p>Reduce cloro, metales pesados y sedimentos. Cartuchos intercambiables.</p>
-        <p><a class="btn" href="https://www.amazon.es/gp/product/B0F8VNJ96F/ref=ox_sc_act_title_23?smid=A2AEKTJUXTI38Z&th=1" target="_blank" rel="noopener">Ver producto →</a></p>
-      </div>
-    </div>
-
-    <!-- COCINA -->
-    <div id="cocina" class="group theme-kitchen reveal">
-      <div class="group-title">Cocina <span class="chip">cocción &amp; organización</span></div>
-
-      <div class="item">
-        <h3>Cazuela de hierro fundido 6 L – Ø28 cm <span class="pref">Negro</span></h3>
-        <p>Compatible con inducción y todas las fuentes de calor. Versátil para guisos.</p>
-        <p><a class="btn" href="https://www.amazon.es/gp/product/B0BXKHJDRP/ref=ox_sc_act_title_10?smid=A1QFIC0N9WI4E7&th=1" target="_blank" rel="noopener">Ver producto →</a></p>
-      </div>
-
-      <div class="item">
-        <h3>Soportes de tazas (2 piezas) – Negro</h3>
-        <p>Rack sin perforación, con 4 estantes para organizar tazas.</p>
-        <p><a class="btn" href="https://www.amazon.es/gp/product/B0C5JYQ9DD/ref=ox_sc_act_title_28?smid=APH9MJG3IM2YG&psc=1" target="_blank" rel="noopener">Ver producto →</a></p>
-      </div>
-    </div>
-
-    <!-- CUERO -->
-    <div id="cuero" class="group theme-leather reveal">
-      <div class="group-title">Accesorios de cuero (TORROSS) <span class="chip">premium</span></div>
-
-      <div class="item">
-        <h3>TORROSS™ Borsa ad angolo -ROJO- <span class="pref">Tipo marsupio</span></h3>
-        <p><a class="btn" href="https://torrosscrafted.com/es/products/torross%E2%84%A2-conjunto-hombre-rinonera-regalos-1" target="_blank" rel="noopener">Ver producto →</a></p>
-      </div>
-
-      <div class="item">
-        <h3>TORROSS™ Custodia per telefono – iPhone <span class="pref">Negro + MagSafe</span></h3>
-        <p><a class="btn" href="https://torrosscrafted.com/it/products/custodia-per-telefono-torross%E2%84%A2-blu-scuro?variant=47173240389956" target="_blank" rel="noopener">Ver producto →</a></p>
-      </div>
-    </div>
-
-    <!-- APORTES -->
-    <div id="aportes" class="group" style="--group-bg:linear-gradient(180deg, rgba(180,180,255,.10), rgba(180,180,255,.03)); --group-border:rgba(180,180,255,.25); --chip-bg:rgba(180,180,255,.18); --chip-bd:rgba(180,180,255,.35);" >
-      <div class="group-title">Aportes / Meta <span class="chip">contribuciones</span></div>
-
-      <div class="item">
-        <h3>xBloom Studio</h3>
-        <p><span class="pref">Se aceptan aportes parciales</span> — no es necesario cubrir el total.</p>
-        <p><a class="btn" href="https://xbloom.com/products/xbloom-studio" target="_blank" rel="noopener">Ver producto →</a></p>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACTO -->
-  <section id="contacto" class="contact-hero" aria-label="Contacto">
-    <img class="contact-bg" src="https://raw.githubusercontent.com/Jlugo76/lista-regalos/main/IMG_0896.jpeg" alt="">
-    <div class="contact-gradient"></div>
-
-    <div class="contact-card">
-      <h2>Contacto</h2>
-      <p><strong>Organizadora:</strong> Grabriela</p>
-      <p class="muted">Si tienes dudas sobre regalos, coordinación o aportes, por favor contacta con Grabriela.</p>
-    </div>
-  </section>
-
-  <footer>
-    Creado por Jhonathan • No preguntes cómo 😄
   </footer>
 
-  <!-- =========================
-       INTERACTIVIDAD (JS)
-       ========================= -->
   <script>
-    // ---------------------------------------
-    // 1) Tema (oscuro por defecto + toggle)
-    // ---------------------------------------
-    (function(){
+    (() => {
       const root = document.documentElement;
-      const key = 'jl-theme';
-      const saved = localStorage.getItem(key);
-      const defaultTheme = 'dark'; // oscuro por defecto
-      root.setAttribute('data-theme', saved || defaultTheme);
 
-      const btn = document.getElementById('themeToggle');
-      const isLight = () => root.getAttribute('data-theme') === 'light';
-      const apply = (mode) => {
-        root.setAttribute('data-theme', mode);
-        localStorage.setItem(key, mode);
-        btn.classList.toggle('active', mode === 'light');
+      // -----------------------------
+      // Theme
+      // -----------------------------
+      const THEME_KEY = "jl-theme";
+      const themeToggle = document.getElementById("themeToggle");
+
+      const getTheme = () => localStorage.getItem(THEME_KEY) || "dark";
+      const setTheme = (mode) => {
+        root.setAttribute("data-theme", mode);
+        localStorage.setItem(THEME_KEY, mode);
+        themeToggle.classList.toggle("is-light", mode === "light");
       };
 
-      // Estado inicial del knob
-      btn.classList.toggle('active', isLight());
+      setTheme(getTheme());
 
-      btn.addEventListener('click', ()=>{
-        apply(isLight() ? 'dark' : 'light');
+      themeToggle.addEventListener("click", () => {
+        const next = root.getAttribute("data-theme") === "light" ? "dark" : "light";
+        setTheme(next);
       });
-    })();
 
-    // ---------------------------------------
-    // 2) Audio con fade-in
-    // ---------------------------------------
-    (function(){
+      // -----------------------------
+      // Audio toggle (sin autoplay forzado)
+      // -----------------------------
       const audio = document.getElementById("bgm");
-      const btn = document.getElementById("playSound");
+      const audioToggle = document.getElementById("audioToggle");
 
-      async function safePlay(){ try{ await audio.play(); }catch{} }
-      document.addEventListener("DOMContentLoaded", safePlay);
+      const fadeTo = (target, ms = 550) => {
+        const start = audio.volume;
+        const delta = target - start;
+        const steps = Math.max(10, Math.floor(ms / 40));
+        let i = 0;
 
-      btn.addEventListener("click", ()=>{
-        audio.muted = false;
-        audio.volume = 0;
-        audio.play();
-        btn.textContent = "🎵 Sonando…";
-        btn.style.opacity = 0.8;
-
-        let v = 0;
-        const fade = setInterval(()=>{
-          v += 0.07;
-          audio.volume = Math.min(v,1);
-          if(v>=1) clearInterval(fade);
-        },120);
-      });
-    })();
-
-    // ---------------------------------------
-    // 3) Reveal al hacer scroll (grupos)
-    // ---------------------------------------
-    (function(){
-      const reveals = document.querySelectorAll('.group.reveal');
-      const obs = new IntersectionObserver((entries)=>{
-        entries.forEach(e=>{
-          if(e.isIntersecting){
-            e.target.classList.add('is-visible');
-            // Una vez visible, dejar de observar
-            obs.unobserve(e.target);
-          }
-        });
-      }, {threshold:.16});
-      reveals.forEach(el=>obs.observe(el));
-    })();
-
-    // ---------------------------------------
-    // 4) Índice lateral: auto-ocultar + scrollspy activo
-    // ---------------------------------------
-    (function(){
-      const side = document.getElementById('sideIndex');
-      const lista = document.getElementById('lista');
-      const contacto = document.getElementById('contacto');
-
-      // Mostrar índice cuando lista está visible
-      const obsVis = new IntersectionObserver((entries)=>{
-        entries.forEach(e=>{
-          if(e.target.id === 'lista'){
-            if(e.isIntersecting) side.classList.add('show');
-            else side.classList.remove('show');
-          }
-        });
-      }, {threshold: .06});
-      obsVis.observe(lista);
-
-      // Ocultar cerca de contacto si no quieres solaparlo (opcional)
-      const obsHide = new IntersectionObserver((entries)=>{
-        entries.forEach(e=>{
-          if(e.isIntersecting) side.classList.remove('show');
-        });
-      }, {threshold: .12});
-      obsHide.observe(contacto);
-
-      // Scrollspy para activar el ítem correspondiente
-      const map = {
-        'setup-cafetero': document.querySelector('.side-index a[data-target="setup-cafetero"]'),
-        'cafe-grano': document.querySelector('.side-index a[data-target="cafe-grano"]'),
-        'domotica': document.querySelector('.side-index a[data-target="domotica"]'),
-        'bienestar': document.querySelector('.side-index a[data-target="bienestar"]'),
-        'cocina': document.querySelector('.side-index a[data-target="cocina"]'),
-        'cuero': document.querySelector('.side-index a[data-target="cuero"]'),
-        'aportes': document.querySelector('.side-index a[data-target="aportes"]'),
+        const tick = () => {
+          i++;
+          const v = start + delta * (i / steps);
+          audio.volume = Math.min(1, Math.max(0, v));
+          if (i < steps) requestAnimationFrame(tick);
+        };
+        tick();
       };
-      const groups = Object.keys(map).map(id => document.getElementById(id));
-      const spy = new IntersectionObserver((entries)=>{
-        entries.forEach(e=>{
-          if(e.isIntersecting){
-            // Limpiar activos
-            Object.values(map).forEach(a=>a.classList.remove('active'));
-            // Activar el de la sección visible
-            const a = map[e.target.id];
-            if(a) a.classList.add('active');
-          }
-        });
-      }, {rootMargin: "-30% 0px -60% 0px", threshold:.2});
-      groups.forEach(el=> el && spy.observe(el));
-    })();
 
-    // ---------------------------------------
-    // 5) Ripple en botones (.btn)
-    // ---------------------------------------
-    (function(){
-      function createRipple(e){
-        const el = e.currentTarget;
-        const rect = el.getBoundingClientRect();
-        const ripple = document.createElement('span');
-        const size = Math.max(rect.width, rect.height);
-        const x = e.clientX - rect.left - size/2;
-        const y = e.clientY - rect.top - size/2;
-        ripple.className = 'ripple';
-        ripple.style.width = ripple.style.height = size + 'px';
-        ripple.style.left = x + 'px';
-        ripple.style.top = y + 'px';
-        el.appendChild(ripple);
-        setTimeout(()=>ripple.remove(), 650);
-      }
-      document.querySelectorAll('.btn').forEach(btn=>{
-        btn.addEventListener('click', createRipple);
+      const setAudioUI = (on) => {
+        audioToggle.setAttribute("aria-pressed", String(on));
+        audioToggle.querySelector(".chip-btn__icon").textContent = on ? "🔊" : "🔈";
+        audioToggle.querySelector(".chip-btn__text").textContent = on ? "Sonando" : "Sonido";
+      };
+
+      setAudioUI(false);
+
+      audioToggle.addEventListener("click", async () => {
+        const pressed = audioToggle.getAttribute("aria-pressed") === "true";
+
+        if (!pressed) {
+          try {
+            audio.muted = false;
+            audio.volume = 0.0;
+            await audio.play();
+            fadeTo(1.0, 650);
+            setAudioUI(true);
+          } catch {
+            setAudioUI(false);
+          }
+        } else {
+          fadeTo(0.0, 350);
+          setTimeout(() => {
+            audio.pause();
+            audio.muted = true;
+          }, 380);
+          setAudioUI(false);
+        }
       });
+
+      // -----------------------------
+      // Reveal
+      // -----------------------------
+      const reveals = document.querySelectorAll(".reveal");
+      const revealObs = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add("is-visible");
+              revealObs.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.12 }
+      );
+      reveals.forEach((el) => revealObs.observe(el));
+
+      // -----------------------------
+      // Side index visibility + scrollspy
+      // -----------------------------
+      const side = document.getElementById("sideIndex");
+      const lista = document.getElementById("lista");
+      const contacto = document.getElementById("contacto");
+
+      const showObs = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.target.id === "lista") {
+              side.classList.toggle("is-visible", e.isIntersecting);
+            }
+          });
+        },
+        { threshold: 0.06 }
+      );
+      showObs.observe(lista);
+
+      const hideObs = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) side.classList.remove("is-visible");
+          });
+        },
+        { threshold: 0.10 }
+      );
+      hideObs.observe(contacto);
+
+      const links = Array.from(side.querySelectorAll(".side-index__link"));
+      const sections = links.map((a) => document.getElementById(a.dataset.target)).filter(Boolean);
+
+      const setActive = (id) => {
+        links.forEach((a) => a.classList.toggle("is-active", a.dataset.target === id));
+      };
+
+      const spyObs = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) setActive(e.target.id);
+          });
+        },
+        { rootMargin: "-30% 0px -60% 0px", threshold: 0.18 }
+      );
+
+      sections.forEach((s) => spyObs.observe(s));
     })();
   </script>
 </body>
