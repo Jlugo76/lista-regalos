@@ -18,17 +18,25 @@
       --bg2:#1a1a1a;
       --bg3:#0f0f0f;
       --divider: rgba(255,255,255,.08);
-      --accent:#7ed957;   /* verde suave tipo Apple */
-      --danger:#ff4d4f;   /* aviso importante */
+      --accent:#7ed957;
+      --danger:#ff4d4f;
+
+      /* Tipografías fluidas por viewport */
+      --fs-h1: clamp(28px, 4vw, 42px);
+      --fs-h2: clamp(22px, 3.2vw, 34px);
+      --fs-h3: clamp(18px, 2.4vw, 22px);
+      --fs-body: clamp(14px, 1.8vw, 18px);
     }
 
     *{box-sizing:border-box}
+    html, body{height:100%}
     body{
       margin:0;
       font-family:"Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
       color:var(--text);
       background: linear-gradient(135deg, var(--bg1), var(--bg2) 40%, var(--bg3));
       overflow-x:hidden;
+      line-height:1.4;
     }
     a{ color:#9bd1ff; text-decoration:none }
     a:hover{ text-decoration:underline }
@@ -43,14 +51,14 @@
     /* Navbar */
     nav{
       position:fixed; left:0; right:0; top:0;
-      display:flex; justify-content:center; gap:40px;
-      padding:14px 24px;
+      display:flex; justify-content:center; gap:clamp(16px, 5vw, 40px);
+      padding:14px clamp(12px, 4vw, 24px);
       background:rgba(0,0,0,.35);
       backdrop-filter: blur(20px);
       border-bottom:1px solid rgba(255,255,255,.06);
       z-index:100;
     }
-    nav a{ color:#cfcfcf; text-decoration:none; font-size:15px; transition:color .25s ease }
+    nav a{ color:#cfcfcf; text-decoration:none; font-size:clamp(13px, 1.8vw, 15px); transition:color .25s ease }
     nav a:hover{ color:#fff }
 
     /* Hero (Portada) */
@@ -60,13 +68,13 @@
       padding-top:90px; text-align:center; animation:fadeIn 1.2s ease;
     }
     .hero img{
-      width:360px; max-width:82vw;
+      width:min(360px, 82vw);
       border-radius:22px;
       box-shadow:0 12px 36px rgba(0,0,0,.5);
       animation:float 6s ease-in-out infinite;
     }
-    .hero h1{ margin:22px 0 8px; font-size:42px; font-weight:600; letter-spacing:-.5px }
-    .hero p{ color:var(--muted); font-size:18px; margin:0 }
+    .hero h1{ margin:22px 0 8px; font-size:var(--fs-h1); font-weight:600; letter-spacing:-.5px }
+    .hero p{ color:var(--muted); font-size:var(--fs-body); margin:0 }
 
     /* Callout importante */
     .callout{
@@ -76,23 +84,24 @@
       border-left:4px solid var(--danger);
       padding:14px 16px; border-radius:12px; color:#ffdede;
       backdrop-filter:saturate(110%);
+      font-size:var(--fs-body);
     }
     .callout strong{ color:#fff }
 
     /* Lista */
     .section{
-      margin:80px auto; max-width:880px; padding:20px; animation:fadeIn 1.2s ease;
+      margin:80px auto; max-width:min(880px, 92vw); padding:20px; animation:fadeIn 1.2s ease;
     }
     .section h2{
-      font-size:34px; font-weight:600; letter-spacing:-1px; text-align:center; margin:0 0 26px;
+      font-size:var(--fs-h2); font-weight:600; letter-spacing:-1px; text-align:center; margin:0 0 26px;
     }
     .category{
       margin:30px 0 10px; padding-top:8px;
-      font-size:18px; color:var(--muted); border-top:1px dashed var(--divider);
+      font-size:clamp(16px, 2.2vw, 18px); color:var(--muted); border-top:1px dashed var(--divider);
     }
     .item{ margin:0 0 22px; padding:0 0 18px; border-bottom:1px solid var(--divider) }
-    .item h3{ font-size:22px; margin:0 0 6px }
-    .item p{ margin:4px 0; color:var(--muted) }
+    .item h3{ font-size:var(--fs-h3); margin:0 0 6px }
+    .item p{ margin:4px 0; color:var(--muted); font-size:var(--fs-body) }
     .price{ font-weight:600; color:#fff }
 
     .pref{
@@ -110,7 +119,7 @@
     }
     .contact-bg{
       position:absolute; inset:0; width:100%; height:100%;
-      object-fit: cover; object-position: 50% 18%;  /* mueve el foco vertical si hace falta */
+      object-fit: cover; object-position: 50% 18%;  /* ajusta el foco si lo necesitas */
       filter:saturate(105%); transform: scale(1.02);
     }
     .contact-gradient{
@@ -118,14 +127,31 @@
       background: linear-gradient(to top, rgba(0,0,0,.65) 0%, rgba(0,0,0,.25) 45%, rgba(0,0,0,.10) 70%, rgba(0,0,0,0) 100%);
     }
     .contact-card{
-      position:relative; z-index:2; margin:0 auto 36px; padding:18px 22px;
+      position:relative; z-index:2; margin: 0 auto 36px; padding:18px 22px;
       background:rgba(0,0,0,.45); backdrop-filter: blur(10px);
-      border:1px solid rgba(255,255,255,.12); border-radius:16px; max-width:840px;
+      border:1px solid rgba(255,255,255,.12); border-radius:16px; max-width:min(840px, 92vw);
       box-shadow:0 10px 30px rgba(0,0,0,.35);
     }
-    .contact-card h2{ margin:0 0 8px; font-size:32px; font-weight:600; letter-spacing:-.6px }
-    .contact-card p{ margin:6px 0; color:#e9e9e9 }
+    .contact-card h2{ margin:0 0 8px; font-size:clamp(22px, 3vw, 32px); font-weight:600; letter-spacing:-.6px }
+    .contact-card p{ margin:6px 0; color:#e9e9e9; font-size:var(--fs-body) }
     .muted{ color:var(--muted) }
+
+    /* Botón de audio */
+    #playSound {
+      position: fixed;
+      inset: auto 20px 20px auto;
+      padding: 10px 14px;
+      background: rgba(255,255,255,.15);
+      backdrop-filter: blur(10px);
+      color: #fff;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.25);
+      cursor: pointer;
+      font-size: 14px;
+      transition: .25s;
+      z-index: 9999;
+    }
+    #playSound:hover { background: rgba(255,255,255,.25); }
 
     /* Footer */
     footer{
@@ -137,14 +163,12 @@
     @keyframes float{ 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
     @keyframes fadeIn{ from{opacity:0} to{opacity:1} }
 
-    /* Responsivo */
+    /* Responsivo extra */
     @media (max-width:640px){
-      .hero h1{ font-size:34px }
-      .hero img{ width:82vw }
-      .section{ padding:14px }
+      .hero{ padding-top:80px; }
       .contact-hero{ min-height:100vh; }
-      .contact-bg{ object-position: 50% 12%; }
-      .contact-card{ margin-bottom:24px; padding:16px 18px; }
+      .contact-bg{ object-position: 50% 12%; } /* un poco más arriba en móvil */
+      #playSound{ inset: auto 12px 12px auto; }
     }
   </style>
 </head>
@@ -157,11 +181,40 @@
     <a href="#contacto">Contacto</a>
   </nav>
 
+  <!-- AUDIO AUTOPLAY (Opción A: inicia mute + botón para activar sonido) -->
+  <audio id="bgm" autoplay loop muted>
+    <source src="https://raw.githubusercontent.com/Jlugo76/lista-regalos/58575521c5600f4745554796995d7f0ce3c86420/song.mp4" type="audio/mp4">
+    <!-- Si subes un .mp3 añade otra línea:
+    <source src="URL_RAW_MP3" type="audio/mpeg">
+    -->
+  </audio>
+  <button id="playSound" aria-label="Activar sonido">🔊 Activar sonido</button>
+
+  <script>
+    const audio = document.getElementById("bgm");
+    const btn = document.getElementById("playSound");
+
+    // Reintento suave por si el navegador demora la reproducción
+    const safePlay = async () => {
+      try { await audio.play(); } catch(e) { /* ignorar */ }
+    };
+
+    // Por accesibilidad y UX: un primer intento silencioso
+    document.addEventListener('DOMContentLoaded', safePlay);
+
+    btn.addEventListener("click", async () => {
+      audio.muted = false;
+      try { await audio.play(); } catch(e) { /* si falla, volver a intentar */ }
+      btn.textContent = "🎵 Sonando…";
+      btn.style.opacity = 0.7;
+    });
+  </script>
+
   <!-- PORTADA -->
   <section id="inicio" class="hero">
-    <img src="https://raw.githubusercontent.com/Jlugo76/lista-regalos/main/Portada.JPG" alt="Portada de la lista de regalos">
+    <img src="https://raw.githubusercontent.com/Jlugo76/lista-regalos/main/Portada.png" alt="Portada">
     <h1>Lista de Regalos</h1>
-    <p style="color:#b1f7c8;">Cositas que me gustaria tener 🥹😅</p>
+    <p style="color:#b1f7c8;">Estilo Apple — elegante y minimalista</p>
 
     <!-- AVISO IMPORTANTE -->
     <div class="callout" role="note" aria-label="Aviso importante">
@@ -217,12 +270,12 @@
     <div class="category">Accesorios de cuero (TORROSS)</div>
 
     <div class="item">
-      <h3>TORROSS™ Borsa ad angolo <span class="pref">Tipo marsupio</span></h3>
+      <h3>TORROSS™ Borsa ad angolo (No importa si llaga tarde) <span class="pref">Tipo marsupio</span></h3>
       <p><a class="btn" href="https://torrosscrafted.com/it/collections/borse" target="_blank" rel="noopener">Ver producto →</a></p>
     </div>
 
     <div class="item">
-      <h3>TORROSS™ Custodia per telefono – iPhone (Negro + Anillo MagSave)</h3>
+      <h3>TORROSS™ Custodia per telefono – iPhone (Negro + mas MagSave - No importa si llaga tarde)</h3>
       <p><a class="btn" href="https://torrosscrafted.com/it/products/custodia-per-telefono-torross%E2%84%A2-blu-scuro?variant=47173240389956" target="_blank" rel="noopener">Ver producto →</a></p>
     </div>
 
@@ -257,8 +310,8 @@
     </div>
 
     <div class="item">
-      <h3>Amazon Echo Show 21 (última generación)</h3>
-      <p>Pantalla inteligente 21″ Full HD, con Fire TV integrado y Alexa.</p>
+      <h3>Amazon Echo Show 15 (última generación)</h3>
+      <p>Pantalla inteligente 15,6″ Full HD, con Fire TV integrado y Alexa.</p>
       <p><a class="btn" href="https://www.amazon.es/gp/product/B0C7XHY6YS/ref=ox_sc_act_title_41?smid=A1AT7YVPFBWXBL&amp;th=1" target="_blank" rel="noopener">Ver producto →</a></p>
     </div>
 
@@ -281,17 +334,13 @@
       <h2>Contacto</h2>
       <p><strong>Organizadora:</strong> Grabriela</p>
       <p class="muted">Si tienes dudas sobre regalos, coordinación o aportes, por favor contacta con Grabriela.</p>
-      <!-- Si quieres, añade tu enlace real:
-      <p style="margin-top:10px;">
-        <a class="btn" href="https://wa.me/TU_NUMERO" target="_blank" rel="noopener">Escribir por WhatsApp</a>
-      </p>
-      -->
     </div>
   </section>
 
   <!-- FOOTER -->
   <footer>
-    Creado por Jhonathan • No preguntes como 😄 
+    Creado por Jhonathan • No preguntes como 😄
   </footer>
 
 </body>
+</html>
